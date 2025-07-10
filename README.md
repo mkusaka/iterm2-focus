@@ -21,6 +21,21 @@ Or using [uv](https://github.com/astral-sh/uv):
 uv pip install iterm2-focus
 ```
 
+## Quick Usage (without installation)
+
+You can run `isf` directly without installing using `uvx`:
+
+```bash
+# List all sessions
+uvx iterm2-focus --list
+
+# Focus a specific session
+uvx iterm2-focus <session-id>
+
+# Get current session ID
+uvx iterm2-focus --get-current
+```
+
 ## Prerequisites
 
 1. **macOS** with iTerm2 installed

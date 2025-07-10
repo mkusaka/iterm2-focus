@@ -46,7 +46,7 @@ async def test_get_session_info_found() -> None:
     with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
         "iterm2.async_get_app", return_value=mock_app
     ):
-            info = await get_session_info("test_session_id")
+        info = await get_session_info("test_session_id")
 
     assert info is not None
     assert info["id"] == "test_session_id"
@@ -57,7 +57,6 @@ async def test_get_session_info_found() -> None:
     assert info["tty"] == "/dev/ttys001"
     assert info["window_id"] == "window1"
     assert info["tab_id"] == "tab1"
-
 
 
 @pytest.mark.asyncio
@@ -80,7 +79,7 @@ async def test_get_session_info_not_found() -> None:
     with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
         "iterm2.async_get_app", return_value=mock_app
     ):
-            info = await get_session_info("test_session_id")
+        info = await get_session_info("test_session_id")
 
     assert info is None
 
@@ -109,7 +108,7 @@ async def test_focus_session_by_name_found() -> None:
     with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
         "iterm2.async_get_app", return_value=mock_app
     ):
-            result = await focus_session_by_name("production")
+        result = await focus_session_by_name("production")
 
     assert result is True
     mock_session.async_activate.assert_called_once()
@@ -140,7 +139,7 @@ async def test_focus_session_by_name_case_insensitive() -> None:
     with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
         "iterm2.async_get_app", return_value=mock_app
     ):
-            result = await focus_session_by_name("production")
+        result = await focus_session_by_name("production")
 
     assert result is True
     mock_session.async_activate.assert_called_once()
@@ -166,7 +165,7 @@ async def test_focus_session_by_name_not_found() -> None:
     with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
         "iterm2.async_get_app", return_value=mock_app
     ):
-            result = await focus_session_by_name("production")
+        result = await focus_session_by_name("production")
 
     assert result is False
 
@@ -218,7 +217,7 @@ async def test_get_all_sessions() -> None:
     with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
         "iterm2.async_get_app", return_value=mock_app
     ):
-            sessions = await get_all_sessions()
+        sessions = await get_all_sessions()
 
     assert len(sessions) == 2
 
@@ -229,7 +228,6 @@ async def test_get_all_sessions() -> None:
     assert sessions[1]["id"] == "session2"
     assert sessions[1]["name"] == "Unnamed"  # Default for None
     assert sessions[1]["hostname"] == "host2"
-
 
 
 def test_run_async() -> None:
