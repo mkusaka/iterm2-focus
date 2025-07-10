@@ -42,7 +42,6 @@ async def test_get_session_info_found() -> None:
     mock_app.terminal_windows = [mock_window]
 
     mock_connection = AsyncMock()
-    mock_connection.async_close = AsyncMock()
 
     with patch("iterm2.Connection.async_create", return_value=mock_connection):
         with patch("iterm2.async_get_app", return_value=mock_app):
@@ -58,7 +57,6 @@ async def test_get_session_info_found() -> None:
     assert info["window_id"] == "window1"
     assert info["tab_id"] == "tab1"
 
-    mock_connection.async_close.assert_called_once()
 
 
 @pytest.mark.asyncio
@@ -77,14 +75,12 @@ async def test_get_session_info_not_found() -> None:
     mock_app.terminal_windows = [mock_window]
 
     mock_connection = AsyncMock()
-    mock_connection.async_close = AsyncMock()
 
     with patch("iterm2.Connection.async_create", return_value=mock_connection):
         with patch("iterm2.async_get_app", return_value=mock_app):
             info = await get_session_info("test_session_id")
 
     assert info is None
-    mock_connection.async_close.assert_called_once()
 
 
 @pytest.mark.asyncio
@@ -107,7 +103,6 @@ async def test_focus_session_by_name_found() -> None:
     mock_app.terminal_windows = [mock_window]
 
     mock_connection = AsyncMock()
-    mock_connection.async_close = AsyncMock()
 
     with patch("iterm2.Connection.async_create", return_value=mock_connection):
         with patch("iterm2.async_get_app", return_value=mock_app):
@@ -117,7 +112,6 @@ async def test_focus_session_by_name_found() -> None:
     mock_session.async_activate.assert_called_once()
     mock_tab.async_select.assert_called_once()
     mock_window.async_activate.assert_called_once()
-    mock_connection.async_close.assert_called_once()
 
 
 @pytest.mark.asyncio
@@ -139,7 +133,6 @@ async def test_focus_session_by_name_case_insensitive() -> None:
     mock_app.terminal_windows = [mock_window]
 
     mock_connection = AsyncMock()
-    mock_connection.async_close = AsyncMock()
 
     with patch("iterm2.Connection.async_create", return_value=mock_connection):
         with patch("iterm2.async_get_app", return_value=mock_app):
@@ -165,14 +158,12 @@ async def test_focus_session_by_name_not_found() -> None:
     mock_app.terminal_windows = [mock_window]
 
     mock_connection = AsyncMock()
-    mock_connection.async_close = AsyncMock()
 
     with patch("iterm2.Connection.async_create", return_value=mock_connection):
         with patch("iterm2.async_get_app", return_value=mock_app):
             result = await focus_session_by_name("production")
 
     assert result is False
-    mock_connection.async_close.assert_called_once()
 
 
 @pytest.mark.asyncio
@@ -218,7 +209,6 @@ async def test_get_all_sessions() -> None:
     mock_app.terminal_windows = [mock_window]
 
     mock_connection = AsyncMock()
-    mock_connection.async_close = AsyncMock()
 
     with patch("iterm2.Connection.async_create", return_value=mock_connection):
         with patch("iterm2.async_get_app", return_value=mock_app):
@@ -234,7 +224,6 @@ async def test_get_all_sessions() -> None:
     assert sessions[1]["name"] == "Unnamed"  # Default for None
     assert sessions[1]["hostname"] == "host2"
 
-    mock_connection.async_close.assert_called_once()
 
 
 def test_run_async() -> None:

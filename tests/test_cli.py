@@ -108,7 +108,7 @@ def test_get_current_with_env(runner: CliRunner) -> None:
         result = runner.invoke(main, ["--get-current"])
 
     assert result.exit_code == 0
-    assert f"Current session ID: {test_session_id}" in result.output
+    assert result.output.strip() == test_session_id
 
 
 def test_get_current_quiet(runner: CliRunner) -> None:

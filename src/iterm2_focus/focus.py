@@ -51,9 +51,8 @@ async def async_focus_session(session_id: str) -> bool:
     except Exception as e:
         raise FocusError(f"Unexpected error: {e}") from e
     finally:
-        # Ensure connection is closed
-        if connection:
-            await connection.async_close()
+        # Connection will be closed automatically
+        pass
 
 
 def focus_session(session_id: str) -> bool:

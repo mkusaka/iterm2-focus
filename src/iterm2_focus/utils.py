@@ -49,8 +49,8 @@ async def get_session_info(session_id: str) -> Optional[Dict[str, Any]]:
                         }
         return None
     finally:
-        if connection:
-            await connection.async_close()
+        # Connection will be closed automatically
+        pass
 
 
 async def focus_session_by_name(name_pattern: str) -> bool:
@@ -84,8 +84,8 @@ async def focus_session_by_name(name_pattern: str) -> bool:
 
         return False
     finally:
-        if connection:
-            await connection.async_close()
+        # Connection will be closed automatically
+        pass
 
 
 async def get_all_sessions() -> List[Dict[str, Any]]:
@@ -129,8 +129,8 @@ async def get_all_sessions() -> List[Dict[str, Any]]:
                     )
         return sessions
     finally:
-        if connection:
-            await connection.async_close()
+        # Connection will be closed automatically
+        pass
 
 
 def run_async(coro: Any) -> Any:

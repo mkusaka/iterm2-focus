@@ -83,12 +83,19 @@ def main(
                 "ITERM_SESSION_ID environment variable not found.",
                 "Are you running this from within iTerm2?",
             )
+        # Remove the prefix (e.g., "w0t5p1:") if present
+        if ":" in session_id:
+            session_id = session_id.split(":", 1)[1]
     elif not session_id:
         click.echo(click.get_current_context().get_help())
         sys.exit(1)
 
     # Type narrowing: session_id is definitely not None here
     assert session_id is not None
+
+    # Remove the prefix (e.g., "w0t5p1:") if present
+    if ":" in session_id:
+        session_id = session_id.split(":", 1)[1]
 
     try:
         result = focus_session(session_id)
@@ -120,10 +127,10 @@ def _get_current_session_id(quiet: bool) -> None:
     """Get and display the current session ID."""
     session_id = os.environ.get("ITERM_SESSION_ID")
     if session_id:
-        if quiet:
-            click.echo(session_id)
-        else:
-            click.echo(f"Current session ID: {session_id}")
+        # Remove the prefix (e.g., "w0t5p1:") if present
+        if ":" in session_id:
+            session_id = session_id.split(":", 1)[1]
+        click.echo(session_id)
     else:
         _error_exit(
             "ITERM_SESSION_ID environment variable not found.",

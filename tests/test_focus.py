@@ -27,7 +27,6 @@ async def test_async_focus_session_success() -> None:
     mock_app.terminal_windows = [mock_window]
 
     mock_connection = AsyncMock()
-    mock_connection.async_close = AsyncMock()
 
     with patch("iterm2.Connection.async_create", return_value=mock_connection):
         with patch("iterm2.async_get_app", return_value=mock_app):
@@ -37,7 +36,6 @@ async def test_async_focus_session_success() -> None:
     mock_session.async_activate.assert_called_once()
     mock_tab.async_select.assert_called_once()
     mock_window.async_activate.assert_called_once()
-    mock_connection.async_close.assert_called_once()
 
 
 @pytest.mark.asyncio
@@ -56,14 +54,12 @@ async def test_async_focus_session_not_found() -> None:
     mock_app.terminal_windows = [mock_window]
 
     mock_connection = AsyncMock()
-    mock_connection.async_close = AsyncMock()
 
     with patch("iterm2.Connection.async_create", return_value=mock_connection):
         with patch("iterm2.async_get_app", return_value=mock_app):
             result = await async_focus_session("test_session_id")
 
     assert result is False
-    mock_connection.async_close.assert_called_once()
 
 
 @pytest.mark.asyncio
