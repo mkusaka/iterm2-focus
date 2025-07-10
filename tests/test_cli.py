@@ -82,9 +82,10 @@ def test_current_session_with_env(runner: CliRunner) -> None:
     """Test --current with ITERM_SESSION_ID set."""
     test_session_id = "test_session_id"
 
-    with patch.dict(os.environ, {"ITERM_SESSION_ID": test_session_id}):
-        with patch("iterm2_focus.cli.focus_session", return_value=True):
-            result = runner.invoke(main, ["--current"])
+    with patch.dict(os.environ, {"ITERM_SESSION_ID": test_session_id}), patch(
+        "iterm2_focus.cli.focus_session", return_value=True
+    ):
+        result = runner.invoke(main, ["--current"])
 
     assert result.exit_code == 0
     assert f"Focused session: {test_session_id}" in result.output

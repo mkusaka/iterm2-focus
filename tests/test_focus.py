@@ -28,9 +28,10 @@ async def test_async_focus_session_success() -> None:
 
     mock_connection = AsyncMock()
 
-    with patch("iterm2.Connection.async_create", return_value=mock_connection):
-        with patch("iterm2.async_get_app", return_value=mock_app):
-            result = await async_focus_session("test_session_id")
+    with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
+        "iterm2.async_get_app", return_value=mock_app
+    ):
+        result = await async_focus_session("test_session_id")
 
     assert result is True
     mock_session.async_activate.assert_called_once()
@@ -55,9 +56,10 @@ async def test_async_focus_session_not_found() -> None:
 
     mock_connection = AsyncMock()
 
-    with patch("iterm2.Connection.async_create", return_value=mock_connection):
-        with patch("iterm2.async_get_app", return_value=mock_app):
-            result = await async_focus_session("test_session_id")
+    with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
+        "iterm2.async_get_app", return_value=mock_app
+    ):
+        result = await async_focus_session("test_session_id")
 
     assert result is False
 
@@ -67,9 +69,8 @@ async def test_async_focus_session_connection_error() -> None:
     """Test connection error handling."""
     with patch(
         "iterm2.Connection.async_create", side_effect=Exception("Connection failed")
-    ):
-        with pytest.raises(FocusError) as exc_info:
-            await async_focus_session("test_session_id")
+    ), pytest.raises(FocusError) as exc_info:
+        await async_focus_session("test_session_id")
 
     assert "Unexpected error: Connection failed" in str(exc_info.value)
 
@@ -100,8 +101,7 @@ def test_focus_session_error() -> None:
     """Test synchronous focus_session error handling."""
     with patch(
         "iterm2_focus.focus.async_focus_session", side_effect=FocusError("Test error")
-    ):
-        with pytest.raises(FocusError) as exc_info:
-            focus_session("test_session_id")
+    ), pytest.raises(FocusError) as exc_info:
+        focus_session("test_session_id")
 
     assert "Test error" in str(exc_info.value)
