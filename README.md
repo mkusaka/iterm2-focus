@@ -23,7 +23,7 @@ uv pip install iterm2-focus
 
 ## Quick Usage (without installation)
 
-You can run `isf` directly without installing using `uvx`:
+You can run `iterm2-focus` directly without installing using `uvx`:
 
 ```bash
 # List all sessions
@@ -51,7 +51,7 @@ uvx iterm2-focus --get-current
 ### Focus a specific session
 
 ```bash
-isf w0t0p0:12345678-1234-1234-1234-123456789012
+iterm2-focus w0t0p0:12345678-1234-1234-1234-123456789012
 ```
 
 ### Focus the current session
@@ -59,38 +59,38 @@ isf w0t0p0:12345678-1234-1234-1234-123456789012
 Useful when returning from another application:
 
 ```bash
-isf --current
+iterm2-focus --current
 # or
-isf -c
+iterm2-focus -c
 ```
 
 ### Get the current session ID
 
 ```bash
-isf --get-current
+iterm2-focus --get-current
 # or
-isf -g
+iterm2-focus -g
 ```
 
 ### List all sessions
 
 ```bash
-isf --list
+iterm2-focus --list
 # or
-isf -l
+iterm2-focus -l
 ```
 
 ### Additional options
 
 ```bash
 # Show version
-isf --version
+iterm2-focus --version
 
 # Quiet mode (suppress output)
-isf -q <session-id>
+iterm2-focus -q <session-id>
 
 # Help
-isf --help
+iterm2-focus --help
 ```
 
 ## Examples
@@ -99,19 +99,19 @@ isf --help
 
 ```bash
 # Save current session ID
-SAVED_SESSION=$(isf -g -q)
+SAVED_SESSION=$(iterm2-focus -g -q)
 
 # ... do other work ...
 
 # Return to saved session
-isf $SAVED_SESSION
+iterm2-focus $SAVED_SESSION
 ```
 
 ### Focus a session from another application
 
 ```applescript
 -- AppleScript example
-do shell script "isf w0t0p0:12345678-1234-1234-1234-123456789012"
+do shell script "iterm2-focus w0t0p0:12345678-1234-1234-1234-123456789012"
 ```
 
 ## Development
@@ -171,7 +171,7 @@ Make sure iTerm2's Python API is enabled (see Prerequisites).
 
 ### "Session not found" error
 
-Verify the session ID using `isf --list` to see all available sessions.
+Verify the session ID using `iterm2-focus --list` to see all available sessions.
 
 ### Permission errors
 

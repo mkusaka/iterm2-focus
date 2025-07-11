@@ -39,8 +39,7 @@ dependencies = [
 "Source Code" = "https://github.com/mkusaka/iterm2-focus"
 
 [project.scripts]
-isf = "iterm2_focus.cli:main"
-iterm-focus = "iterm2_focus.cli:main"
+iterm2-focus = "iterm2_focus.cli:main"
 
 [project.optional-dependencies]
 dev = [
