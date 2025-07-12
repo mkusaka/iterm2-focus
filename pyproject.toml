@@ -55,14 +55,11 @@ dev = [
 ]
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling==1.22.0"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build]
 sources = ["src"]
-
-[tool.hatch.build.targets.wheel]
-core-metadata-version = "2.2"
 
 [tool.uv]
 dev-dependencies = [
