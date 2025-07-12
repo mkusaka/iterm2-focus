@@ -112,11 +112,11 @@ def main():
     print("Updating __init__.py...")
     update_init_py(init_path, new_version)
     
-    # Run uv install to update uv.lock
-    print("Running uv install to update uv.lock...")
-    result = run_command(["uv", "install"], check=False)
+    # Run uv sync to update uv.lock
+    print("Running uv sync to update uv.lock...")
+    result = run_command(["uv", "sync", "--all-extras", "--dev"], check=False)
     if result.returncode != 0:
-        print(f"Error running uv install: {result.stderr}")
+        print(f"Error running uv sync: {result.stderr}")
         sys.exit(1)
     
     # Git add changes

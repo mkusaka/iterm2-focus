@@ -44,7 +44,7 @@ make version-major
 
 Version bumping automatically:
 - Updates version in pyproject.toml and __init__.py
-- Runs `uv install` to update uv.lock
+- Runs `uv sync` to update uv.lock
 - Creates a git commit with message "chore: bump version to X.Y.Z"
 - Creates a git tag "vX.Y.Z"
 
@@ -106,7 +106,7 @@ make check
 # Install all dependencies (including dev dependencies)
 make install
 # or
-uv install
+uv sync --all-extras --dev
 
 # Show all available make commands
 make help

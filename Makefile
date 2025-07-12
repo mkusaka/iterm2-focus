@@ -4,7 +4,7 @@ help: ## Show this help message
 
 .PHONY: install
 install: ## Install dependencies
-	uv install
+	uv sync --all-extras --dev
 
 .PHONY: build
 build: ## Build the package
