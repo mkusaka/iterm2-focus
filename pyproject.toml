@@ -1,6 +1,6 @@
 [project]
 name = "iterm2-focus"
-version = "0.0.5"
+version = "0.0.6"
 description = "Focus iTerm2 sessions by ID"
 authors = [
     {name = "mkusaka", email = "hinoshita1992@gmail.com"}
