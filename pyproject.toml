@@ -55,7 +55,7 @@ dev = [
 ]
 
 [build-system]
-requires = ["hatchling==1.22.0"]
+requires = ["hatchling>=1.22.0,<2"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build]
