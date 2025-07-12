@@ -62,9 +62,14 @@ build-backend = "hatchling.build"
 sources = ["src"]
 
 [tool.hatch.build.targets.wheel]
+# Force metadata version 2.2 for PyPI/Twine compatibility
+# Newer Hatchling versions default to 2.3+ which may not be supported
+# by older twine/pkginfo versions, especially in GitHub Actions environments
+# This can be removed once PyPI ecosystem fully supports newer metadata versions
 core-metadata-version = "2.2"
 
 [tool.hatch.build.targets.sdist]
+# Same metadata version constraint for source distributions
 core-metadata-version = "2.2"
 
 [tool.hatch.metadata]
