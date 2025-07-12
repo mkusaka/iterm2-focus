@@ -30,6 +30,15 @@ uv run pytest tests/test_cli.py
 
 # Run a specific test
 uv run pytest tests/test_cli.py::test_version
+
+# Run tests excluding integration tests
+uv run pytest -m "not integration"
+
+# Run only integration tests (requires iTerm2)
+uv run pytest -m integration
+
+# Run integration tests with helper script
+./scripts/run_integration_tests.sh
 ```
 
 ### Type Checking
