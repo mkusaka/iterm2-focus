@@ -11,18 +11,53 @@ iterm2-focus is a Python CLI tool that allows focusing iTerm2 sessions by their 
 ### Build and Distribution
 ```bash
 # Build the package
+make build
+# or
 uv build
 
 # Upload to PyPI (requires credentials)
+make publish
+# or
 uv publish
+
+# Upload to TestPyPI
+make publish-test
 ```
+
+### Version Management
+```bash
+# Bump patch version (0.0.X)
+make patch
+# or
+make version-patch
+
+# Bump minor version (0.X.0)
+make minor
+# or
+make version-minor
+
+# Bump major version (X.0.0)
+make major
+# or
+make version-major
+```
+
+Version bumping automatically:
+- Updates version in pyproject.toml and __init__.py
+- Runs `uv sync` to update uv.lock
+- Creates a git commit with message "chore: bump version to X.Y.Z"
+- Creates a git tag "vX.Y.Z"
 
 ### Testing
 ```bash
 # Run all tests
+make test
+# or
 uv run pytest
 
 # Run tests with coverage
+make test-cov
+# or
 uv run pytest --cov=iterm2_focus
 
 # Run a specific test file
@@ -35,31 +70,49 @@ uv run pytest tests/test_cli.py::test_version
 ### Type Checking
 ```bash
 # Run mypy type checker
+make mypy
+# or
 uv run mypy src
 ```
 
 ### Linting and Formatting
 ```bash
 # Check with ruff
+make lint
+# or
 uv run ruff check src tests
 
 # Auto-fix with ruff
+make lint-fix
+# or
 uv run ruff check --fix src tests
 
 # Format with black
+make format
+# or
 uv run black src tests
 
 # Check formatting without changes
+make format-check
+# or
 uv run black --check src tests
+
+# Run all checks (lint, mypy, format-check, test)
+make check
 ```
 
 ### Development Setup
 ```bash
-# Create virtual environment
-uv venv
+# Install all dependencies (including dev dependencies)
+make install
+# or
+uv sync --all-extras --dev
 
-# Install package in development mode with all dependencies
-uv pip install -e ".[dev]"
+# Show all available make commands
+make help
+
+# Clean build artifacts
+make clean
 ```
 
 ## Architecture
