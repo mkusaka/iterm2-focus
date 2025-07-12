@@ -111,10 +111,13 @@ def test_focus_session_error() -> None:
 async def test_async_focus_session_connection_error_specific() -> None:
     """Test specific ConnectionError handling."""
     with patch(
-        "iterm2.Connection.async_create", side_effect=ConnectionError("Connection refused")
+        "iterm2.Connection.async_create",
+        side_effect=ConnectionError("Connection refused"),
     ), pytest.raises(FocusError) as exc_info:
         await async_focus_session("test_session_id")
-    
+
     assert "Failed to connect to iTerm2" in str(exc_info.value)
     assert "Connection refused" in str(exc_info.value)
-    assert "Make sure iTerm2 is running and Python API is enabled" in str(exc_info.value)
+    assert "Make sure iTerm2 is running and Python API is enabled" in str(
+        exc_info.value
+    )
