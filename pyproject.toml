@@ -145,6 +145,7 @@ addopts = [
 ]
 markers = [
     "integration: marks tests as integration tests (deselect with '-m \"not integration\"')",
+    "tmux: marks tests that use tmux for terminal emulation",
 ]
 
 [tool.coverage.run]

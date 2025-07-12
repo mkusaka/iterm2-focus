@@ -5,22 +5,16 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
-    inputs:
-      debug_enabled:
-        type: boolean
-        description: 'Enable debug mode'
-        required: false
-        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  integration-test-macos:
-    name: Integration Test on macOS
+  # Test with tmux on macOS
+  tmux-test-macos:
+    name: Tmux Integration Test (macOS)
     runs-on: macos-latest
-    continue-on-error: true  # Allow failure due to CI environment limitations
     
     steps:
       - name: Checkout code
@@ -38,68 +32,29 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-extras --dev
 
-      - name: Install iTerm2
+      - name: Install tmux
         run: |
-          # Download iTerm2
-          curl -L https://iterm2.com/downloads/stable/iTerm2-3_5_0.zip -o iTerm2.zip
-          unzip -q iTerm2.zip
+          # Install tmux if not already available
+          if ! command -v tmux &> /dev/null; then
+            brew install tmux
+          fi
           
-          # Move to Applications
-          sudo mv iTerm.app /Applications/
-          
-          # Give permissions
-          sudo xattr -cr /Applications/iTerm.app
-          
-      - name: Enable iTerm2 Python API
-        run: |
-          # Create iTerm2 preferences directory
-          mkdir -p "$HOME/Library/Application Support/iTerm2"
-          
-          # Enable Python API in preferences
-          defaults write com.googlecode.iterm2 "Python API Enabled" -bool true
-          
-          # Create minimal iterm2env to indicate API is available
-          mkdir -p "$HOME/Library/Application Support/iTerm2/iterm2env"
-          
-      - name: Start iTerm2 in background
-        run: |
-          # Try to start iTerm2 in background
-          # Note: This may fail in headless CI environment
-          open -a iTerm --hide || true
-          
-          # Give it time to start
-          sleep 5
-          
-          # Check if it's running
-          pgrep -x iTerm2 || echo "iTerm2 failed to start (expected in CI)"
+          # Verify tmux installation
+          tmux -V
 
-      - name: Debug environment
-        if: ${{ inputs.debug_enabled }}
+      - name: Run tmux integration tests
         run: |
-          echo "=== System Info ==="
-          sw_vers
-          echo ""
-          echo "=== Process List ==="
-          ps aux | grep -i iterm || true
-          echo ""
-          echo "=== iTerm2 Support Directory ==="
-          ls -la "$HOME/Library/Application Support/iTerm2/" || true
-          echo ""
-          echo "=== Environment Variables ==="
-          env | grep -i iterm || true
+          # Run tmux-based tests
+          uv run pytest -v tests/test_tmux_integration.py -m tmux
 
-      - name: Run integration tests
+      - name: Run unit tests
         run: |
-          # Run integration tests with pytest markers
-          uv run pytest -v tests/test_integration.py -m integration --tb=short || true
-          
-      - name: Run unit tests to ensure no regression
-        run: |
-          # Run regular unit tests
-          uv run pytest -v tests/ -k "not test_integration" --cov=iterm2_focus
+          # Also run regular unit tests to ensure no regression
+          uv run pytest -v -m "not integration and not tmux" --cov=iterm2_focus
 
-  mock-server-test:
-    name: Mock Server Integration Test
+  # Test with tmux on Ubuntu
+  tmux-test-ubuntu:
+    name: Tmux Integration Test (Ubuntu)
     runs-on: ubuntu-latest
     
     steps:
@@ -118,134 +73,167 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-extras --dev
 
-      - name: Create iTerm2 API mock server
+      - name: Install tmux
         run: |
-          cat > mock_iterm2_server.py << 'EOF'
-          """Mock iTerm2 WebSocket server for testing."""
+          # Update package list and install tmux
+          sudo apt-get update
+          sudo apt-get install -y tmux
+          
+          # Verify tmux installation
+          tmux -V
+
+      - name: Run tmux integration tests
+        run: |
+          # Run tmux-based tests
+          uv run pytest -v tests/test_tmux_integration.py -m tmux
+
+  # Mock server test that simulates iTerm2 API
+  mock-server-test:
+    name: Mock iTerm2 API Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@bd01e18f51369d5a26f1651c3cb451d3417e3bba # v6.3.1
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        run: uv python install 3.13
+
+      - name: Install dependencies
+        run: uv sync --all-extras --dev
+
+      - name: Create iTerm2 API mock
+        run: |
+          cat > mock_iterm2.py << 'EOF'
+          """Mock iTerm2 module for testing in CI."""
           import asyncio
-          import json
-          import websockets
-          from websockets.server import WebSocketServerProtocol
+          from typing import List, Optional, Dict, Any
           
-          class MockiTerm2Server:
-              def __init__(self):
-                  self.sessions = {
-                      "mock-session-1": {
-                          "session_id": "mock-session-1",
-                          "name": "Mock Session 1",
-                          "tty": "/dev/ttys001",
-                          "username": "testuser",
-                          "hostname": "localhost",
-                          "path": "/home/testuser"
-                      },
-                      "mock-session-2": {
-                          "session_id": "mock-session-2",
-                          "name": "Mock Session 2",
-                          "tty": "/dev/ttys002",
-                          "username": "testuser",
-                          "hostname": "localhost",
-                          "path": None
-                      }
+          
+          class MockSession:
+              def __init__(self, session_id: str, name: str = "Mock Session"):
+                  self.session_id = session_id
+                  self.name = name
+                  self._variables = {
+                      "session.name": name,
+                      "session.tty": f"/dev/ttys{session_id[-3:]}",
+                      "user.username": "testuser",
+                      "session.hostname": "localhost",
+                      "session.path": "/home/testuser"
                   }
-                  self.current_session = "mock-session-1"
+              
+              async def async_activate(self):
+                  """Mock activate method."""
+                  return True
+              
+              async def async_get_variable(self, name: str) -> Optional[str]:
+                  """Mock get variable method."""
+                  return self._variables.get(name)
           
-              async def handle_message(self, websocket: WebSocketServerProtocol, message: str):
-                  """Handle incoming WebSocket messages."""
-                  try:
-                      data = json.loads(message)
-                      method = data.get("method", "")
-                      
-                      if method == "list_sessions":
-                          response = {
-                              "id": data.get("id"),
-                              "result": list(self.sessions.values())
-                          }
-                      elif method == "focus_session":
-                          session_id = data.get("params", {}).get("session_id")
-                          if session_id in self.sessions:
-                              self.current_session = session_id
-                              response = {"id": data.get("id"), "result": True}
-                          else:
-                              response = {"id": data.get("id"), "result": False}
-                      elif method == "get_current_session":
-                          response = {
-                              "id": data.get("id"),
-                              "result": self.sessions.get(self.current_session)
-                          }
-                      else:
-                          response = {
-                              "id": data.get("id"),
-                              "error": f"Unknown method: {method}"
-                          }
-                      
-                      await websocket.send(json.dumps(response))
-                  except Exception as e:
-                      error_response = {
-                          "id": data.get("id") if 'data' in locals() else None,
-                          "error": str(e)
-                      }
-                      await websocket.send(json.dumps(error_response))
           
-              async def handler(self, websocket: WebSocketServerProtocol, path: str):
-                  """WebSocket connection handler."""
-                  try:
-                      async for message in websocket:
-                          await self.handle_message(websocket, message)
-                  except websockets.exceptions.ConnectionClosed:
-                      pass
+          class MockTab:
+              def __init__(self, sessions: List[MockSession]):
+                  self.sessions = sessions
+                  self.tab_id = "mock_tab_1"
+              
+              async def async_select(self):
+                  """Mock select method."""
+                  return True
           
-          async def main():
-              server = MockiTerm2Server()
-              async with websockets.serve(server.handler, "localhost", 8765):
-                  print("Mock iTerm2 server running on ws://localhost:8765")
-                  await asyncio.Future()  # Run forever
           
-          if __name__ == "__main__":
-              asyncio.run(main())
+          class MockWindow:
+              def __init__(self, tabs: List[MockTab]):
+                  self.tabs = tabs
+                  self.window_id = "mock_window_1"
+              
+              async def async_activate(self):
+                  """Mock activate method."""
+                  return True
+          
+          
+          class MockApp:
+              def __init__(self):
+                  # Create some mock sessions
+                  session1 = MockSession("mock_session_001", "Session 1")
+                  session2 = MockSession("mock_session_002", "Session 2")
+                  tab1 = MockTab([session1])
+                  tab2 = MockTab([session2])
+                  window = MockWindow([tab1, tab2])
+                  self.terminal_windows = [window]
+          
+          
+          class MockConnection:
+              """Mock connection class."""
+              
+              @classmethod
+              async def async_create(cls):
+                  """Mock create connection."""
+                  return cls()
+          
+          
+          async def async_get_app(connection):
+              """Mock get app function."""
+              return MockApp()
+          
+          
+          # Mock the Connection class
+          Connection = MockConnection
           EOF
 
-      - name: Install websockets for mock server
-        run: uv pip install websockets
-
-      - name: Start mock iTerm2 server
+      - name: Run tests with mock iTerm2
         run: |
-          # Start the mock server in background
-          uv run python mock_iterm2_server.py &
-          MOCK_SERVER_PID=$!
-          echo "MOCK_SERVER_PID=$MOCK_SERVER_PID" >> $GITHUB_ENV
+          # Add mock to Python path
+          export PYTHONPATH="${PWD}:${PYTHONPATH}"
           
-          # Wait for server to start
-          sleep 2
-
-      - name: Run tests with mock server
-        run: |
-          # Set environment variable to use mock server
-          export ITERM2_MOCK_SERVER="ws://localhost:8765"
+          # Create a wrapper that imports our mock
+          cat > test_with_mock.py << 'EOF'
+          import sys
+          sys.modules['iterm2'] = __import__('mock_iterm2')
           
-          # Run a subset of tests that can work with mock
-          uv run pytest -v tests/test_cli.py tests/test_focus.py tests/test_utils.py
+          # Now run the actual tests
+          import subprocess
+          result = subprocess.run([
+              sys.executable, "-m", "pytest", "-v", 
+              "tests/test_focus.py", "tests/test_utils.py",
+              "-k", "not integration and not tmux"
+          ])
+          sys.exit(result.returncode)
+          EOF
+          
+          # Run tests with mock
+          uv run python test_with_mock.py
 
-      - name: Stop mock server
-        if: always()
-        run: |
-          if [ ! -z "$MOCK_SERVER_PID" ]; then
-            kill $MOCK_SERVER_PID || true
-          fi
-
-  notify-status:
-    name: Notify Integration Test Status
-    needs: [integration-test-macos, mock-server-test]
+  # Summary job
+  integration-test-summary:
+    name: Integration Test Summary
+    needs: [tmux-test-macos, tmux-test-ubuntu, mock-server-test]
     runs-on: ubuntu-latest
     if: always()
     
     steps:
       - name: Check test results
         run: |
-          echo "Integration test results:"
-          echo "macOS iTerm2 test: ${{ needs.integration-test-macos.result }}"
-          echo "Mock server test: ${{ needs.mock-server-test.result }}"
+          echo "=================================================="
+          echo "        Integration Test Results"
+          echo "=================================================="
+          echo ""
+          echo "Tmux macOS test: ${{ needs.tmux-test-macos.result }}"
+          echo "Tmux Ubuntu test: ${{ needs.tmux-test-ubuntu.result }}"
+          echo "Mock API test: ${{ needs.mock-server-test.result }}"
+          echo ""
           
-          # Note: macOS test is allowed to fail due to CI limitations
-          if [ "${{ needs.mock-server-test.result }}" != "success" ]; then
-            echo "::warning::Mock server tests failed"
+          # Fail if any required test failed
+          if [[ "${{ needs.tmux-test-macos.result }}" == "failure" ]] || \
+             [[ "${{ needs.tmux-test-ubuntu.result }}" == "failure" ]] || \
+             [[ "${{ needs.mock-server-test.result }}" == "failure" ]]; then
+            echo "❌ Some integration tests failed!"
+            exit 1
+          else
+            echo "✅ All integration tests passed!"
           fi
