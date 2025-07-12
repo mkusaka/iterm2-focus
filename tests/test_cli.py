@@ -184,3 +184,73 @@ def test_list_sessions_error(runner: CliRunner) -> None:
 
     assert result.exit_code == 1
     assert "Error: Failed to list sessions: Connection failed" in result.output
+
+
+def test_focus_session_with_prefix(runner: CliRunner) -> None:
+    """Test handling session ID with prefix format."""
+    with patch("iterm2_focus.cli.focus_session", return_value=True) as mock_focus:
+        result = runner.invoke(main, ["w0t5p1:test_session_id"])
+    
+    mock_focus.assert_called_once_with("test_session_id")
+    assert result.exit_code == 0
+    assert "Focused session: test_session_id" in result.output
+
+
+def test_current_session_with_prefix(runner: CliRunner) -> None:
+    """Test --current with prefixed ITERM_SESSION_ID."""
+    with patch.dict(os.environ, {"ITERM_SESSION_ID": "w0t5p1:test_session_id"}):
+        with patch("iterm2_focus.cli.focus_session", return_value=True) as mock_focus:
+            result = runner.invoke(main, ["--current"])
+    
+    mock_focus.assert_called_once_with("test_session_id")
+    assert result.exit_code == 0
+    assert "Focused session: test_session_id" in result.output
+
+
+def test_get_current_with_prefix(runner: CliRunner) -> None:
+    """Test --get-current with prefixed ITERM_SESSION_ID."""
+    with patch.dict(os.environ, {"ITERM_SESSION_ID": "w0t5p1:test_session_id"}):
+        result = runner.invoke(main, ["--get-current"])
+    
+    assert result.exit_code == 0
+    assert result.output.strip() == "test_session_id"
+
+
+def test_list_sessions_without_path(runner: CliRunner) -> None:
+    """Test listing sessions where some have no path."""
+    mock_sessions = [
+        {
+            "id": "session1",
+            "name": "Session with path",
+            "window": "window1",
+            "tab": "tab1", 
+            "hostname": "localhost",
+            "username": "user",
+            "path": "/home/user",
+            "tty": "/dev/ttys001",
+        },
+        {
+            "id": "session2",
+            "name": "Session without path",
+            "window": "window1",
+            "tab": "tab2",
+            "hostname": "localhost",
+            "username": "user",
+            "path": None,  # No path
+            "tty": "/dev/ttys002",
+        },
+    ]
+    
+    with patch("iterm2_focus.cli.asyncio.run", return_value=mock_sessions):
+        result = runner.invoke(main, ["--list"])
+    
+    assert result.exit_code == 0
+    # Verify path is shown for session1
+    assert "Path: /home/user" in result.output
+    # Verify session2 is listed
+    assert "ID: session2" in result.output
+    # Verify no path is shown after session2 by checking lines
+    lines = result.output.split('\n')
+    session2_index = next(i for i, line in enumerate(lines) if "ID: session2" in line)
+    # Check that there's no "Path:" line immediately after session2 (within next 5 lines)
+    assert not any("Path:" in lines[i] for i in range(session2_index, min(session2_index + 5, len(lines))))
