@@ -53,15 +53,15 @@ clean: ## Clean build artifacts
 # Version management
 .PHONY: version-patch
 version-patch: ## Bump patch version (0.0.X)
-	@python scripts/bump_version.py patch
+	@uv run python scripts/bump_version.py patch
 
 .PHONY: version-minor
 version-minor: ## Bump minor version (0.X.0)
-	@python scripts/bump_version.py minor
+	@uv run python scripts/bump_version.py minor
 
 .PHONY: version-major
 version-major: ## Bump major version (X.0.0)
-	@python scripts/bump_version.py major
+	@uv run python scripts/bump_version.py major
 
 # Shortcuts
 .PHONY: patch
