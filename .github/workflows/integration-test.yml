@@ -11,9 +11,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Test with tmux on macOS
-  tmux-test-macos:
-    name: Tmux Integration Test (macOS)
+  # E2E tests on macOS
+  e2e-test-macos:
+    name: E2E Test (macOS)
     runs-on: macos-latest
     
     steps:
@@ -32,29 +32,19 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-extras --dev
 
-      - name: Install tmux
+      - name: Run E2E tests
         run: |
-          # Install tmux if not already available
-          if ! command -v tmux &> /dev/null; then
-            brew install tmux
-          fi
-          
-          # Verify tmux installation
-          tmux -V
-
-      - name: Run tmux integration tests
-        run: |
-          # Run tmux-based tests
-          uv run pytest -v tests/test_tmux_integration.py -m tmux
+          # Run end-to-end CLI tests
+          uv run pytest -v tests/test_e2e.py -m e2e
 
       - name: Run unit tests
         run: |
           # Also run regular unit tests to ensure no regression
           uv run pytest -v -m "not integration and not tmux" --cov=iterm2_focus
 
-  # Test with tmux on Ubuntu
-  tmux-test-ubuntu:
-    name: Tmux Integration Test (Ubuntu)
+  # E2E tests on Ubuntu
+  e2e-test-ubuntu:
+    name: E2E Test (Ubuntu)
     runs-on: ubuntu-latest
     
     steps:
@@ -73,19 +63,10 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-extras --dev
 
-      - name: Install tmux
+      - name: Run E2E tests
         run: |
-          # Update package list and install tmux
-          sudo apt-get update
-          sudo apt-get install -y tmux
-          
-          # Verify tmux installation
-          tmux -V
-
-      - name: Run tmux integration tests
-        run: |
-          # Run tmux-based tests
-          uv run pytest -v tests/test_tmux_integration.py -m tmux
+          # Run end-to-end CLI tests
+          uv run pytest -v tests/test_e2e.py -m e2e
 
   # Mock server test that simulates iTerm2 API
   mock-server-test:
@@ -212,7 +193,7 @@ jobs:
   # Summary job
   integration-test-summary:
     name: Integration Test Summary
-    needs: [tmux-test-macos, tmux-test-ubuntu, mock-server-test]
+    needs: [e2e-test-macos, e2e-test-ubuntu, mock-server-test]
     runs-on: ubuntu-latest
     if: always()
     
@@ -223,14 +204,14 @@ jobs:
           echo "        Integration Test Results"
           echo "=================================================="
           echo ""
-          echo "Tmux macOS test: ${{ needs.tmux-test-macos.result }}"
-          echo "Tmux Ubuntu test: ${{ needs.tmux-test-ubuntu.result }}"
+          echo "E2E macOS test: ${{ needs.e2e-test-macos.result }}"
+          echo "E2E Ubuntu test: ${{ needs.e2e-test-ubuntu.result }}"
           echo "Mock API test: ${{ needs.mock-server-test.result }}"
           echo ""
           
           # Fail if any required test failed
-          if [[ "${{ needs.tmux-test-macos.result }}" == "failure" ]] || \
-             [[ "${{ needs.tmux-test-ubuntu.result }}" == "failure" ]] || \
+          if [[ "${{ needs.e2e-test-macos.result }}" == "failure" ]] || \
+             [[ "${{ needs.e2e-test-ubuntu.result }}" == "failure" ]] || \
              [[ "${{ needs.mock-server-test.result }}" == "failure" ]]; then
             echo "❌ Some integration tests failed!"
             exit 1
