@@ -2,7 +2,7 @@
 
 from typing import List
 
-__version__: str = "0.0.3"
+__version__: str = "0.0.4"
 __author__: str = "mkusaka"
 __email__: str = "hinoshita1992@gmail.com"
 
