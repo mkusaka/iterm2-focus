@@ -2,6 +2,7 @@
 
 import subprocess
 import time
+from typing import List
 
 import pytest
 
@@ -24,7 +25,7 @@ def create_tmux_session(session_name: str) -> bool:
         return False
 
 
-def list_tmux_sessions() -> list[str]:
+def list_tmux_sessions() -> List[str]:
     """List all tmux sessions."""
     try:
         result = subprocess.run(
