@@ -57,12 +57,12 @@ def main(
 
     \b
     Examples:
-        isf w0t0p0:12345678-1234-1234-1234-123456789012
-        isf --current
-        isf -c
-        isf --get-current
-        isf -g
-        isf --list
+        iterm2-focus w0t0p0:12345678-1234-1234-1234-123456789012
+        iterm2-focus --current
+        iterm2-focus -c
+        iterm2-focus --get-current
+        iterm2-focus -g
+        iterm2-focus --list
     """
     if version:
         click.echo(f"iterm2-focus {__version__}")

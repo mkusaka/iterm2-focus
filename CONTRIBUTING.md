@@ -67,12 +67,12 @@ During development, you can test the CLI using:
 
 ```bash
 # Using uv run
-uv run isf --help
-uv run isf --list
+uv run iterm2-focus --help
+uv run iterm2-focus --list
 
 # Or activate the virtual environment
 source .venv/bin/activate
-isf --help
+iterm2-focus --help
 ```
 
 ## Pull Request Process
