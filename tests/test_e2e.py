@@ -3,8 +3,7 @@
 import os
 import subprocess
 import sys
-from typing import Dict, Any
-from unittest.mock import patch, MagicMock, AsyncMock
+from typing import Any, Dict
 
 import pytest
 
@@ -16,12 +15,12 @@ def run_cli_command(args: list) -> Dict[str, Any]:
     result = subprocess.run(
         [sys.executable, "-m", "iterm2_focus.cli"] + args,
         capture_output=True,
-        text=True
+        text=True,
     )
     return {
         "returncode": result.returncode,
         "stdout": result.stdout,
-        "stderr": result.stderr
+        "stderr": result.stderr,
     }
 
 
@@ -65,11 +64,11 @@ class MockSession:
         self.session_id = session_id
         self.name = name
         self._activated = False
-    
+
     async def async_activate(self):
         self._activated = True
         return True
-    
+
     async def async_get_variable(self, name):
         variables = {
             "session.name": self.name,
@@ -85,7 +84,7 @@ class MockTab:
         self.sessions = sessions
         self.tab_id = "mock_tab_001"
         self._selected = False
-    
+
     async def async_select(self):
         self._selected = True
         return True
@@ -95,7 +94,7 @@ class MockWindow:
         self.tabs = tabs
         self.window_id = "mock_window_001"
         self._activated = False
-    
+
     async def async_activate(self):
         self._activated = True
         return True
@@ -166,28 +165,26 @@ assert "test_session_001" in result.output
 
 print("All tests passed!")
 """
-    
+
     # Write test script
     with open("test_cli_e2e.py", "w") as f:
         f.write(test_script)
-    
+
     try:
         # Run the test script
         result = subprocess.run(
-            [sys.executable, "test_cli_e2e.py"],
-            capture_output=True,
-            text=True
+            [sys.executable, "test_cli_e2e.py"], capture_output=True, text=True
         )
-        
+
         print("E2E Test Output:")
         print(result.stdout)
         if result.stderr:
             print("E2E Test Errors:")
             print(result.stderr)
-        
+
         assert result.returncode == 0, f"E2E test failed: {result.stderr}"
         assert "All tests passed!" in result.stdout
-        
+
     finally:
         # Cleanup
         if os.path.exists("test_cli_e2e.py"):
@@ -253,15 +250,13 @@ result = runner.invoke(main, ['w0t5p1:test123'])
 assert result.exit_code == 0, f"Failed with: {result.output}"
 print("Prefix handling test passed!")
 """
-    
+
     with open("test_prefix.py", "w") as f:
         f.write(test_script)
-    
+
     try:
         result = subprocess.run(
-            [sys.executable, "test_prefix.py"],
-            capture_output=True,
-            text=True
+            [sys.executable, "test_prefix.py"], capture_output=True, text=True
         )
         assert result.returncode == 0, f"Prefix test failed: {result.stderr}"
         assert "Prefix handling test passed!" in result.stdout
