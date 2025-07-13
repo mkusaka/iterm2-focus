@@ -82,8 +82,9 @@ def test_current_session_with_env(runner: CliRunner) -> None:
     """Test --current with ITERM_SESSION_ID set."""
     test_session_id = "test_session_id"
 
-    with patch.dict(os.environ, {"ITERM_SESSION_ID": test_session_id}), patch(
-        "iterm2_focus.cli.focus_session", return_value=True
+    with (
+        patch.dict(os.environ, {"ITERM_SESSION_ID": test_session_id}),
+        patch("iterm2_focus.cli.focus_session", return_value=True),
     ):
         result = runner.invoke(main, ["--current"])
 
@@ -198,9 +199,10 @@ def test_focus_session_with_prefix(runner: CliRunner) -> None:
 
 def test_current_session_with_prefix(runner: CliRunner) -> None:
     """Test --current with prefixed ITERM_SESSION_ID."""
-    with patch.dict(os.environ, {"ITERM_SESSION_ID": "w0t5p1:test_session_id"}), patch(
-        "iterm2_focus.cli.focus_session", return_value=True
-    ) as mock_focus:
+    with (
+        patch.dict(os.environ, {"ITERM_SESSION_ID": "w0t5p1:test_session_id"}),
+        patch("iterm2_focus.cli.focus_session", return_value=True) as mock_focus,
+    ):
         result = runner.invoke(main, ["--current"])
 
     mock_focus.assert_called_once_with("test_session_id")

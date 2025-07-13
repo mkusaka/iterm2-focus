@@ -1,12 +1,12 @@
 """Utility functions for iterm2-focus."""
 
 import asyncio
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import iterm2
 
 
-async def get_session_info(session_id: str) -> Optional[Dict[str, Any]]:
+async def get_session_info(session_id: str) -> dict[str, Any] | None:
     """Get detailed information about a session.
 
     Args:
@@ -15,7 +15,7 @@ async def get_session_info(session_id: str) -> Optional[Dict[str, Any]]:
     Returns:
         Dictionary with session information or None if not found
     """
-    connection: Optional[Any] = None
+    connection: Any | None = None
 
     try:
         connection = await iterm2.Connection.async_create()
@@ -25,17 +25,17 @@ async def get_session_info(session_id: str) -> Optional[Dict[str, Any]]:
             for tab in window.tabs:
                 for session in tab.sessions:
                     if session.session_id == session_id:
-                        name: Optional[str] = await session.async_get_variable(
+                        name: str | None = await session.async_get_variable(
                             "session.name"
                         )
-                        hostname: Optional[str] = await session.async_get_variable(
+                        hostname: str | None = await session.async_get_variable(
                             "hostname"
                         )
-                        username: Optional[str] = await session.async_get_variable(
+                        username: str | None = await session.async_get_variable(
                             "username"
                         )
-                        path: Optional[str] = await session.async_get_variable("path")
-                        tty: Optional[str] = await session.async_get_variable("tty")
+                        path: str | None = await session.async_get_variable("path")
+                        tty: str | None = await session.async_get_variable("tty")
 
                         return {
                             "id": session_id,
@@ -62,7 +62,7 @@ async def focus_session_by_name(name_pattern: str) -> bool:
     Returns:
         True if a matching session was found and focused, False otherwise
     """
-    connection: Optional[Any] = None
+    connection: Any | None = None
 
     try:
         connection = await iterm2.Connection.async_create()
@@ -73,7 +73,7 @@ async def focus_session_by_name(name_pattern: str) -> bool:
         for window in app.terminal_windows:
             for tab in window.tabs:
                 for session in tab.sessions:
-                    session_name: Optional[str] = await session.async_get_variable(
+                    session_name: str | None = await session.async_get_variable(
                         "session.name"
                     )
                     if session_name and name_lower in session_name.lower():
@@ -88,33 +88,27 @@ async def focus_session_by_name(name_pattern: str) -> bool:
         pass
 
 
-async def get_all_sessions() -> List[Dict[str, Any]]:
+async def get_all_sessions() -> list[dict[str, Any]]:
     """Get information about all sessions.
 
     Returns:
         List of dictionaries with session information
     """
-    connection: Optional[Any] = None
+    connection: Any | None = None
 
     try:
         connection = await iterm2.Connection.async_create()
         app = await iterm2.async_get_app(connection)
 
-        sessions: List[Dict[str, Any]] = []
+        sessions: list[dict[str, Any]] = []
 
         for window in app.terminal_windows:
             for tab in window.tabs:
                 for session in tab.sessions:
-                    name: Optional[str] = await session.async_get_variable(
-                        "session.name"
-                    )
-                    hostname: Optional[str] = await session.async_get_variable(
-                        "hostname"
-                    )
-                    username: Optional[str] = await session.async_get_variable(
-                        "username"
-                    )
-                    path: Optional[str] = await session.async_get_variable("path")
+                    name: str | None = await session.async_get_variable("session.name")
+                    hostname: str | None = await session.async_get_variable("hostname")
+                    username: str | None = await session.async_get_variable("username")
+                    path: str | None = await session.async_get_variable("path")
 
                     sessions.append(
                         {

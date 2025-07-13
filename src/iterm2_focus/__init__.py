@@ -1,12 +1,10 @@
 """iTerm2 Focus - Focus iTerm2 sessions by ID."""
 
-from typing import List
-
 __version__: str = "0.0.10"
 __author__: str = "mkusaka"
 __email__: str = "hinoshita1992@gmail.com"
 
-__all__: List[str] = [
+__all__: list[str] = [
     "focus_session",
     "FocusError",
     "get_session_info",

@@ -1,33 +1,27 @@
 """MCP server implementation for iterm2-focus."""
 
-import sys
-from typing import TYPE_CHECKING
+from typing import Any
 
-# MCP requires Python 3.10+
-MCP_AVAILABLE = sys.version_info >= (3, 10)
+# Initialize with None, will be overridden if import succeeds
+mcp: Any | None = None
+focus_session: Any | None = None
+get_current_session: Any | None = None
+list_sessions: Any | None = None
+MCP_AVAILABLE = False
 
-if TYPE_CHECKING:
-    # Type checking imports
-    from typing import Any, Optional
+try:
+    from .server import mcp
+    from .tools import focus_session, get_current_session, list_sessions
 
-    mcp: Optional[Any] = None
-    focus_session: Optional[Any] = None
-    get_current_session: Optional[Any] = None
-    list_sessions: Optional[Any] = None
-elif MCP_AVAILABLE:
-    try:
-        from .server import mcp
-        from .tools import focus_session, get_current_session, list_sessions
-    except ImportError:
-        MCP_AVAILABLE = False
-        mcp = None
-        focus_session = None
-        get_current_session = None
-        list_sessions = None
-else:
-    mcp = None
-    focus_session = None
-    get_current_session = None
-    list_sessions = None
+    MCP_AVAILABLE = True
+except ImportError:
+    # MCP dependencies not installed - keep the None values
+    pass
 
-__all__ = ["mcp", "MCP_AVAILABLE"]
+__all__ = [
+    "mcp",
+    "MCP_AVAILABLE",
+    "focus_session",
+    "get_current_session",
+    "list_sessions",
+]

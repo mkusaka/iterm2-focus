@@ -147,7 +147,7 @@ Key design patterns:
 
 ### Running the MCP Server
 ```bash
-# Install MCP dependencies (requires Python 3.10+)
+# Install MCP dependencies
 make install
 # or
 uv sync --all-extras --dev
@@ -173,8 +173,7 @@ uv run python -m iterm2_focus.mcp
 
 MCP Configuration notes:
 1. MCP server runs with STDIO transport by default
-2. Requires Python 3.10+ due to MCP library requirements
-3. All iTerm2 functionality is exposed as MCP tools:
+2. All iTerm2 functionality is exposed as MCP tools:
    - `list_sessions` - List all iTerm2 sessions
    - `focus_session` - Focus a specific session by ID
    - `get_current_session` - Get current session info

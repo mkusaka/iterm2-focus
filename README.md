@@ -39,7 +39,7 @@ uvx iterm2-focus --get-current
 ## Prerequisites
 
 1. **macOS** with iTerm2 installed
-2. **Python 3.8** or later (Python 3.10+ required for MCP server)
+2. **Python 3.10** or later
 3. **iTerm2 Python API** must be enabled:
    - Open iTerm2
    - Go to *Settings* → *General* → *Magic*
@@ -93,7 +93,7 @@ iterm2-focus -q <session-id>
 iterm2-focus --help
 ```
 
-## MCP Server Mode (Python 3.10+)
+## MCP Server Mode
 
 `iterm2-focus` can run as an MCP (Model Context Protocol) server, allowing LLM applications like Claude Desktop to control iTerm2 sessions.
 

@@ -1,7 +1,5 @@
 """MCP tools for iTerm2 session management."""
 
-from typing import List, Optional
-
 import iterm2
 from pydantic import BaseModel, Field
 
@@ -15,12 +13,10 @@ class SessionInfo(BaseModel):
     window_id: str = Field(description="The window ID containing this session")
     tab_id: str = Field(description="The tab ID containing this session")
     is_active: bool = Field(description="Whether this is the currently active session")
-    title: Optional[str] = Field(
+    title: str | None = Field(
         default=None, description="The session title if available"
     )
-    name: Optional[str] = Field(
-        default=None, description="The session name if available"
-    )
+    name: str | None = Field(default=None, description="The session name if available")
 
 
 class FocusResult(BaseModel):
@@ -32,7 +28,7 @@ class FocusResult(BaseModel):
 
 
 @mcp.tool()
-async def list_sessions() -> List[SessionInfo]:
+async def list_sessions() -> list[SessionInfo]:
     """List all available iTerm2 sessions.
 
     Returns a list of all sessions across all windows and tabs,
@@ -136,7 +132,7 @@ async def focus_session(session_id: str) -> FocusResult:
 
 
 @mcp.tool()
-async def get_current_session() -> Optional[SessionInfo]:
+async def get_current_session() -> SessionInfo | None:
     """Get information about the currently focused iTerm2 session.
 
     Returns:
