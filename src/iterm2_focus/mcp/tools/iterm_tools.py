@@ -15,8 +15,12 @@ class SessionInfo(BaseModel):
     window_id: str = Field(description="The window ID containing this session")
     tab_id: str = Field(description="The tab ID containing this session")
     is_active: bool = Field(description="Whether this is the currently active session")
-    title: Optional[str] = Field(default=None, description="The session title if available")
-    name: Optional[str] = Field(default=None, description="The session name if available")
+    title: Optional[str] = Field(
+        default=None, description="The session title if available"
+    )
+    name: Optional[str] = Field(
+        default=None, description="The session name if available"
+    )
 
 
 class FocusResult(BaseModel):
@@ -63,14 +67,16 @@ async def list_sessions() -> List[SessionInfo]:
                         # Ignore errors getting profile info
                         pass
 
-                    sessions.append(SessionInfo(
-                        session_id=session.session_id,
-                        window_id=window.window_id,
-                        tab_id=tab.tab_id,
-                        is_active=session.session_id == current_session_id,
-                        title=title,
-                        name=name
-                    ))
+                    sessions.append(
+                        SessionInfo(
+                            session_id=session.session_id,
+                            window_id=window.window_id,
+                            tab_id=tab.tab_id,
+                            is_active=session.session_id == current_session_id,
+                            title=title,
+                            name=name,
+                        )
+                    )
 
         return sessions
 
@@ -106,26 +112,26 @@ async def focus_session(session_id: str) -> FocusResult:
                         return FocusResult(
                             success=True,
                             session_id=session_id,
-                            message=f"Successfully focused session {session_id}"
+                            message=f"Successfully focused session {session_id}",
                         )
 
         return FocusResult(
             success=False,
             session_id=session_id,
-            message=f"Session {session_id} not found"
+            message=f"Session {session_id} not found",
         )
 
     except ConnectionError as e:
         return FocusResult(
             success=False,
             session_id=session_id,
-            message=f"Failed to connect to iTerm2: {str(e)}. Make sure iTerm2 is running and Python API is enabled."
+            message=f"Failed to connect to iTerm2: {str(e)}. Make sure iTerm2 is running and Python API is enabled.",
         )
     except Exception as e:
         return FocusResult(
             success=False,
             session_id=session_id,
-            message=f"Failed to focus session: {str(e)}"
+            message=f"Failed to focus session: {str(e)}",
         )
 
 
@@ -170,9 +176,8 @@ async def get_current_session() -> Optional[SessionInfo]:
             tab_id=tab.tab_id,
             is_active=True,
             title=title,
-            name=name
+            name=name,
         )
 
     except Exception:
         return None
-

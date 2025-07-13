@@ -10,7 +10,7 @@ if sys.version_info < (3, 10):
 
 try:
     from .server import mcp
-    from .tools import *  # Import all tools to register them
+    from .tools import focus_session, get_current_session, list_sessions  # noqa: F401
 except ImportError as e:
     print(f"Error: Failed to import MCP dependencies: {e}", file=sys.stderr)
     print("Please install with: pip install 'iterm2-focus[mcp]'", file=sys.stderr)

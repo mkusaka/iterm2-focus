@@ -6,5 +6,5 @@ from mcp.server.fastmcp import FastMCP
 mcp = FastMCP(
     "iterm2-focus",
     description="Focus iTerm2 sessions by ID through MCP",
-    version="0.1.0"
+    version="0.1.0",
 )

@@ -223,13 +223,13 @@ def _start_mcp_server() -> None:
                 "",
                 "Install with: pip install 'iterm2-focus[mcp]'",
             )
-    
+
     # Import here to avoid import errors on Python < 3.10
     from .mcp.__main__ import main as mcp_main
-    
+
     click.echo("Starting iterm2-focus MCP server...")
     click.echo("Server is running. Press Ctrl+C to stop.")
-    
+
     try:
         mcp_main()
     except KeyboardInterrupt:
