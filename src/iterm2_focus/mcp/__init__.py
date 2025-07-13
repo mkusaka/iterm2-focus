@@ -9,7 +9,7 @@ MCP_AVAILABLE = sys.version_info >= (3, 10)
 if TYPE_CHECKING:
     # Type checking imports
     from typing import Any, Optional
-    
+
     mcp: Optional[Any] = None
     focus_session: Optional[Any] = None
     get_current_session: Optional[Any] = None
