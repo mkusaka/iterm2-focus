@@ -39,7 +39,7 @@ uvx iterm2-focus --get-current
 ## Prerequisites
 
 1. **macOS** with iTerm2 installed
-2. **Python 3.8** or later
+2. **Python 3.8** or later (Python 3.10+ required for MCP server)
 3. **iTerm2 Python API** must be enabled:
    - Open iTerm2
    - Go to *Settings* → *General* → *Magic*
@@ -92,6 +92,64 @@ iterm2-focus -q <session-id>
 # Help
 iterm2-focus --help
 ```
+
+## MCP Server Mode (Python 3.10+)
+
+`iterm2-focus` can run as an MCP (Model Context Protocol) server, allowing LLM applications like Claude Desktop to control iTerm2 sessions.
+
+### Starting the MCP server
+
+```bash
+# Install with MCP support
+pip install 'iterm2-focus[mcp]'
+
+# Start the MCP server
+iterm2-focus --mcp
+```
+
+### Configuring Claude Desktop
+
+Using Claude Code CLI (recommended):
+
+```bash
+# Add the MCP server using uvx (no installation required)
+claude mcp add iterm2-focus uvx iterm2-focus --mcp
+
+# Or if you have it installed locally
+claude mcp add iterm2-focus iterm2-focus --mcp
+```
+
+Or manually add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "iterm2-focus": {
+      "command": "uvx",
+      "args": ["iterm2-focus", "--mcp"]
+    }
+  }
+}
+```
+
+Or if you have it installed locally:
+
+```json
+{
+  "mcpServers": {
+    "iterm2-focus": {
+      "command": "iterm2-focus",
+      "args": ["--mcp"]
+    }
+  }
+}
+```
+
+### Available MCP tools
+
+- **list_sessions**: List all iTerm2 sessions with their IDs and metadata
+- **focus_session**: Focus a specific session by ID
+- **get_current_session**: Get information about the currently focused session
 
 ## Examples
 

@@ -10,6 +10,7 @@ import iterm2
 
 from . import __version__
 from .focus import FocusError, focus_session
+from .mcp import MCP_AVAILABLE
 
 
 @click.command()
@@ -45,6 +46,11 @@ from .focus import FocusError, focus_session
     is_flag=True,
     help="Suppress output messages.",
 )
+@click.option(
+    "--mcp",
+    is_flag=True,
+    help="Start as an MCP server (requires Python 3.10+).",
+)
 def main(
     session_id: Optional[str],
     version: bool,
@@ -52,6 +58,7 @@ def main(
     get_current: bool,
     list_sessions: bool,
     quiet: bool,
+    mcp: bool,
 ) -> None:
     """Focus iTerm2 session by ID.
 
@@ -63,9 +70,14 @@ def main(
         iterm2-focus --get-current
         iterm2-focus -g
         iterm2-focus --list
+        iterm2-focus --mcp  # Start as MCP server (requires Python 3.10+)
     """
     if version:
         click.echo(f"iterm2-focus {__version__}")
+        sys.exit(0)
+
+    if mcp:
+        _start_mcp_server()
         sys.exit(0)
 
     if get_current:
@@ -193,6 +205,37 @@ def _list_sessions() -> None:
 
     except Exception as e:
         _error_exit(f"Failed to list sessions: {e}")
+
+
+def _start_mcp_server() -> None:
+    """Start the MCP server."""
+    if not MCP_AVAILABLE:
+        if sys.version_info < (3, 10):
+            _error_exit(
+                "MCP server requires Python 3.10 or higher.",
+                f"Current Python version: {sys.version}",
+                "",
+                "To use MCP server, please upgrade to Python 3.10+",
+            )
+        else:
+            _error_exit(
+                "MCP dependencies are not installed.",
+                "",
+                "Install with: pip install 'iterm2-focus[mcp]'",
+            )
+    
+    # Import here to avoid import errors on Python < 3.10
+    from .mcp.__main__ import main as mcp_main
+    
+    click.echo("Starting iterm2-focus MCP server...")
+    click.echo("Server is running. Press Ctrl+C to stop.")
+    
+    try:
+        mcp_main()
+    except KeyboardInterrupt:
+        click.echo("\nServer stopped.")
+    except Exception as e:
+        _error_exit(f"Failed to start MCP server: {e}")
 
 
 if __name__ == "__main__":
