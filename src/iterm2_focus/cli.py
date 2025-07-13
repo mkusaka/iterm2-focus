@@ -3,13 +3,14 @@
 import asyncio
 import os
 import sys
-from typing import Dict, List, NoReturn, Optional
+from typing import NoReturn
 
 import click
 import iterm2
 
 from . import __version__
 from .focus import FocusError, focus_session
+from .mcp import MCP_AVAILABLE
 
 
 @click.command()
@@ -45,13 +46,19 @@ from .focus import FocusError, focus_session
     is_flag=True,
     help="Suppress output messages.",
 )
+@click.option(
+    "--mcp",
+    is_flag=True,
+    help="Start as an MCP server.",
+)
 def main(
-    session_id: Optional[str],
+    session_id: str | None,
     version: bool,
     current: bool,
     get_current: bool,
     list_sessions: bool,
     quiet: bool,
+    mcp: bool,
 ) -> None:
     """Focus iTerm2 session by ID.
 
@@ -63,9 +70,14 @@ def main(
         iterm2-focus --get-current
         iterm2-focus -g
         iterm2-focus --list
+        iterm2-focus --mcp  # Start as MCP server
     """
     if version:
         click.echo(f"iterm2-focus {__version__}")
+        sys.exit(0)
+
+    if mcp:
+        _start_mcp_server()
         sys.exit(0)
 
     if get_current:
@@ -141,12 +153,12 @@ def _get_current_session_id(quiet: bool) -> None:
 def _list_sessions() -> None:
     """List all available iTerm2 sessions."""
 
-    async def list_all_sessions() -> List[Dict[str, Optional[str]]]:
+    async def list_all_sessions() -> list[dict[str, str | None]]:
         """Async function to get all sessions."""
         connection = await iterm2.Connection.async_create()
         app = await iterm2.async_get_app(connection)
 
-        sessions: List[Dict[str, Optional[str]]] = []
+        sessions: list[dict[str, str | None]] = []
         for window in app.terminal_windows:
             for tab in window.tabs:
                 for session in tab.sessions:
@@ -193,6 +205,28 @@ def _list_sessions() -> None:
 
     except Exception as e:
         _error_exit(f"Failed to list sessions: {e}")
+
+
+def _start_mcp_server() -> None:
+    """Start the MCP server."""
+    if not MCP_AVAILABLE:
+        _error_exit(
+            "MCP dependencies are not installed.",
+            "",
+            "Install with: pip install 'iterm2-focus[mcp]'",
+        )
+
+    from .mcp.__main__ import main as mcp_main
+
+    click.echo("Starting iterm2-focus MCP server...")
+    click.echo("Server is running. Press Ctrl+C to stop.")
+
+    try:
+        mcp_main()
+    except KeyboardInterrupt:
+        click.echo("\nServer stopped.")
+    except Exception as e:
+        _error_exit(f"Failed to start MCP server: {e}")
 
 
 if __name__ == "__main__":

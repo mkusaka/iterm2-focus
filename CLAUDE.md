@@ -142,3 +142,44 @@ Key design patterns:
 - Clear error handling with custom FocusError exception
 - Type hints throughout for better IDE support and type safety
 - Modular design allowing easy testing of individual components
+
+## MCP Server Development
+
+### Running the MCP Server
+```bash
+# Install MCP dependencies
+make install
+# or
+uv sync --all-extras --dev
+
+# Run MCP server locally
+iterm2-focus --mcp
+# or
+uv run iterm2-focus --mcp
+
+# Test MCP server with MCP Inspector
+uv run mcp dev src/iterm2_focus/mcp/server.py
+
+# Run MCP module directly
+uv run python -m iterm2_focus.mcp
+```
+
+### MCP Architecture
+- **src/iterm2_focus/mcp/** - MCP server implementation
+  - **server.py** - FastMCP server instance
+  - **tools/** - MCP tool implementations
+    - **iterm_tools.py** - iTerm2-specific MCP tools
+  - **__main__.py** - Entry point for running as MCP server
+
+MCP Configuration notes:
+1. MCP server runs with STDIO transport by default
+2. All iTerm2 functionality is exposed as MCP tools:
+   - `list_sessions` - List all iTerm2 sessions
+   - `focus_session` - Focus a specific session by ID
+   - `get_current_session` - Get current session info
+
+# important-instruction-reminders
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.

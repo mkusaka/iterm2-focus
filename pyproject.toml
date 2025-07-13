@@ -7,7 +7,7 @@ authors = [
 ]
 readme = "README.md"
 license = {text = "MIT"}
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Environment :: Console",
@@ -16,11 +16,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: MacOS",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Terminals",
     "Topic :: Utilities",
     "Typing :: Typed",
@@ -42,6 +41,10 @@ dependencies = [
 iterm2-focus = "iterm2_focus.cli:main"
 
 [project.optional-dependencies]
+mcp = [
+    "mcp[cli]>=1.0.0",
+    "pydantic>=2.0.0",
+]
 dev = [
     "pytest>=7.4.0",
     "pytest-cov>=4.1.0",
@@ -87,11 +90,13 @@ dev-dependencies = [
     "types-click>=7.1.0",
     "ipython>=8.0.0",
     "twine>=5.0.0",
+    "mcp[cli]>=1.0.0",
+    "pydantic>=2.0.0",
 ]
 
 [tool.black]
 line-length = 88
-target-version = ["py38"]
+target-version = ["py310"]
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -109,7 +114,7 @@ extend-exclude = '''
 
 [tool.ruff]
 line-length = 88
-target-version = "py38"
+target-version = "py310"
 
 [tool.ruff.lint]
 select = [
@@ -131,7 +136,7 @@ ignore = [
 "tests/*" = ["S101"]  # allow assert in tests
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.10"
 strict = true
 warn_return_any = true
 warn_unused_configs = true
@@ -145,6 +150,10 @@ files = ["src", "tests"]
 
 [[tool.mypy.overrides]]
 module = "iterm2.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "mcp.*"
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

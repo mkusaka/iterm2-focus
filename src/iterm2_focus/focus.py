@@ -1,7 +1,7 @@
 """Core functionality for focusing iTerm2 sessions using Python API."""
 
 import asyncio
-from typing import Any, Optional
+from typing import Any
 
 import iterm2
 
@@ -24,7 +24,7 @@ async def async_focus_session(session_id: str) -> bool:
     Raises:
         FocusError: If there's an error connecting to iTerm2
     """
-    connection: Optional[Any] = None
+    connection: Any | None = None
 
     try:
         connection = await iterm2.Connection.async_create()

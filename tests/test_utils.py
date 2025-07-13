@@ -43,8 +43,9 @@ async def test_get_session_info_found() -> None:
 
     mock_connection = AsyncMock()
 
-    with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
-        "iterm2.async_get_app", return_value=mock_app
+    with (
+        patch("iterm2.Connection.async_create", return_value=mock_connection),
+        patch("iterm2.async_get_app", return_value=mock_app),
     ):
         info = await get_session_info("test_session_id")
 
@@ -76,8 +77,9 @@ async def test_get_session_info_not_found() -> None:
 
     mock_connection = AsyncMock()
 
-    with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
-        "iterm2.async_get_app", return_value=mock_app
+    with (
+        patch("iterm2.Connection.async_create", return_value=mock_connection),
+        patch("iterm2.async_get_app", return_value=mock_app),
     ):
         info = await get_session_info("test_session_id")
 
@@ -105,8 +107,9 @@ async def test_focus_session_by_name_found() -> None:
 
     mock_connection = AsyncMock()
 
-    with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
-        "iterm2.async_get_app", return_value=mock_app
+    with (
+        patch("iterm2.Connection.async_create", return_value=mock_connection),
+        patch("iterm2.async_get_app", return_value=mock_app),
     ):
         result = await focus_session_by_name("production")
 
@@ -136,8 +139,9 @@ async def test_focus_session_by_name_case_insensitive() -> None:
 
     mock_connection = AsyncMock()
 
-    with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
-        "iterm2.async_get_app", return_value=mock_app
+    with (
+        patch("iterm2.Connection.async_create", return_value=mock_connection),
+        patch("iterm2.async_get_app", return_value=mock_app),
     ):
         result = await focus_session_by_name("production")
 
@@ -162,8 +166,9 @@ async def test_focus_session_by_name_not_found() -> None:
 
     mock_connection = AsyncMock()
 
-    with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
-        "iterm2.async_get_app", return_value=mock_app
+    with (
+        patch("iterm2.Connection.async_create", return_value=mock_connection),
+        patch("iterm2.async_get_app", return_value=mock_app),
     ):
         result = await focus_session_by_name("production")
 
@@ -214,8 +219,9 @@ async def test_get_all_sessions() -> None:
 
     mock_connection = AsyncMock()
 
-    with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
-        "iterm2.async_get_app", return_value=mock_app
+    with (
+        patch("iterm2.Connection.async_create", return_value=mock_connection),
+        patch("iterm2.async_get_app", return_value=mock_app),
     ):
         sessions = await get_all_sessions()
 

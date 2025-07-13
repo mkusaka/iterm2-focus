@@ -28,8 +28,9 @@ async def test_async_focus_session_success() -> None:
 
     mock_connection = AsyncMock()
 
-    with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
-        "iterm2.async_get_app", return_value=mock_app
+    with (
+        patch("iterm2.Connection.async_create", return_value=mock_connection),
+        patch("iterm2.async_get_app", return_value=mock_app),
     ):
         result = await async_focus_session("test_session_id")
 
@@ -56,8 +57,9 @@ async def test_async_focus_session_not_found() -> None:
 
     mock_connection = AsyncMock()
 
-    with patch("iterm2.Connection.async_create", return_value=mock_connection), patch(
-        "iterm2.async_get_app", return_value=mock_app
+    with (
+        patch("iterm2.Connection.async_create", return_value=mock_connection),
+        patch("iterm2.async_get_app", return_value=mock_app),
     ):
         result = await async_focus_session("test_session_id")
 
@@ -67,9 +69,12 @@ async def test_async_focus_session_not_found() -> None:
 @pytest.mark.asyncio
 async def test_async_focus_session_connection_error() -> None:
     """Test connection error handling."""
-    with patch(
-        "iterm2.Connection.async_create", side_effect=Exception("Connection failed")
-    ), pytest.raises(FocusError) as exc_info:
+    with (
+        patch(
+            "iterm2.Connection.async_create", side_effect=Exception("Connection failed")
+        ),
+        pytest.raises(FocusError) as exc_info,
+    ):
         await async_focus_session("test_session_id")
 
     assert "Unexpected error: Connection failed" in str(exc_info.value)
@@ -99,9 +104,13 @@ def test_focus_session_not_found() -> None:
 
 def test_focus_session_error() -> None:
     """Test synchronous focus_session error handling."""
-    with patch(
-        "iterm2_focus.focus.async_focus_session", side_effect=FocusError("Test error")
-    ), pytest.raises(FocusError) as exc_info:
+    with (
+        patch(
+            "iterm2_focus.focus.async_focus_session",
+            side_effect=FocusError("Test error"),
+        ),
+        pytest.raises(FocusError) as exc_info,
+    ):
         focus_session("test_session_id")
 
     assert "Test error" in str(exc_info.value)
@@ -110,10 +119,13 @@ def test_focus_session_error() -> None:
 @pytest.mark.asyncio
 async def test_async_focus_session_connection_error_specific() -> None:
     """Test specific ConnectionError handling."""
-    with patch(
-        "iterm2.Connection.async_create",
-        side_effect=ConnectionError("Connection refused"),
-    ), pytest.raises(FocusError) as exc_info:
+    with (
+        patch(
+            "iterm2.Connection.async_create",
+            side_effect=ConnectionError("Connection refused"),
+        ),
+        pytest.raises(FocusError) as exc_info,
+    ):
         await async_focus_session("test_session_id")
 
     assert "Failed to connect to iTerm2" in str(exc_info.value)
