@@ -10,7 +10,12 @@ import iterm2
 
 from . import __version__
 from .focus import FocusError, focus_session
-from .mcp import MCP_AVAILABLE
+
+# Import MCP_AVAILABLE conditionally to avoid mypy issues on Python < 3.10
+try:
+    from .mcp import MCP_AVAILABLE
+except ImportError:
+    MCP_AVAILABLE = False
 
 
 @click.command()
