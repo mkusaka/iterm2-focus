@@ -26,10 +26,10 @@ uv pip install iterm2-focus
 Send a macOS notification that focuses the current iTerm2 session when clicked:
 
 ```bash
-terminal-notifier -title "Task Complete" -message "Click to focus" -execute "/Users/masatomokusaka/.local/bin/uvx iterm2-focus $ITERM_SESSION_ID"
+terminal-notifier -title "Task Complete" -message "Click to focus" -execute "$(which uvx) iterm2-focus $ITERM_SESSION_ID"
 ```
 
-Note: Replace `/Users/masatomokusaka/.local/bin/uvx` with your actual uvx path (find it with `which uvx`). Requires `terminal-notifier` (`brew install terminal-notifier`).
+Note: Requires `terminal-notifier` (`brew install terminal-notifier`).
 
 ## Quick Usage (without installation)
 
