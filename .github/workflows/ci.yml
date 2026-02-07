@@ -117,7 +117,7 @@ jobs:
         # Note: This action uses older twine/pkginfo versions that only support up to Metadata-Version 2.2
         # We force metadata version 2.2 in pyproject.toml to ensure compatibility
         # See pyproject.toml [tool.hatch.build.targets] for details
-        uses: pypa/gh-action-pypi-publish@f7600683efdcb7656dec5b29656edb7bc586e597 # release/v1.12
+        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
 
       - name: Create GitHub Release
         run: gh release create ${{ github.ref_name }} dist/* --generate-notes
