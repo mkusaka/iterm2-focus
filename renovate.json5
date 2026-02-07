@@ -7,6 +7,17 @@
     {
       "matchManagers": ["pep621"],
       "rangeStrategy": "bump"
+    },
+    {
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["tool.uv.dev-dependencies"],
+      "groupName": "dev dependencies"
+    },
+    {
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["project.optional-dependencies"],
+      "matchJsonata": ["managerData.depGroup = 'dev'"],
+      "groupName": "dev dependencies"
     }
   ]
 }
