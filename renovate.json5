@@ -20,6 +20,11 @@
       "matchJsonata": ["managerData.depGroup = 'dev'"],
       "matchUpdateTypes": ["minor", "patch"],
       "groupName": "dev dependencies"
+    },
+    {
+      "matchManagers": ["pep621"],
+      "matchPackageNames": ["python"],
+      "dependencyDashboardApproval": true
     }
   ]
 }
