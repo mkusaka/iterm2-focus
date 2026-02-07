@@ -11,19 +11,6 @@
     {
       "matchManagers": ["pep621"],
       "matchDepTypes": ["tool.uv.dev-dependencies"],
-      "matchUpdateTypes": ["major"],
-      "groupName": "dev dependencies (major)"
-    },
-    {
-      "matchManagers": ["pep621"],
-      "matchDepTypes": ["project.optional-dependencies"],
-      "matchJsonata": ["managerData.depGroup = 'dev'"],
-      "matchUpdateTypes": ["major"],
-      "groupName": "dev dependencies (major)"
-    },
-    {
-      "matchManagers": ["pep621"],
-      "matchDepTypes": ["tool.uv.dev-dependencies"],
       "matchUpdateTypes": ["minor", "patch"],
       "groupName": "dev dependencies"
     },
