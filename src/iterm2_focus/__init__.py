@@ -1,6 +1,6 @@
 """iTerm2 Focus - Focus iTerm2 sessions by ID."""
 
-__version__: str = "0.0.11"
+__version__: str = "0.0.12"
 __author__: str = "mkusaka"
 __email__: str = "hinoshita1992@gmail.com"
 
