@@ -556,7 +556,7 @@ dev = [
 requires-dist = [
     { name = "anyio", marker = "extra == 'dev'", specifier = ">=4.0.0" },
     { name = "black", marker = "extra == 'dev'", specifier = ">=23.0.0" },
-    { name = "click", specifier = ">=8.1.0" },
+    { name = "click", specifier = "==8.1.8" },
     { name = "iterm2", specifier = "==2.10" },
     { name = "mcp", extras = ["cli"], marker = "extra == 'mcp'", specifier = ">=1.0.0" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.5.0" },
