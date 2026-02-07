@@ -1,5 +1,7 @@
 """Tests for iTerm2-specific MCP tools."""
 
+from unittest.mock import AsyncMock, MagicMock
+
 import pytest
 
 from tests.conftest import MCP_TEST_AVAILABLE, skip_if_no_mcp
@@ -35,7 +37,7 @@ class TestITermTools:
             assert session["window_id"] == "w0"
             assert session["tab_id"] == "t0"
             assert session["is_active"] is True
-            assert session["title"] == "Test Session"
+            assert session["title"] is None
             assert session["name"] == "Session Name"
 
     @skip_if_no_mcp
@@ -48,11 +50,11 @@ class TestITermTools:
         mock_app = await mock_iterm2_for_mcp.async_get_app()
 
         # Add more sessions to the mock
-        session2 = mock_iterm2_for_mcp.MagicMock()
+        mock_profile2 = MagicMock()
+        mock_profile2.name = "Session 2"
+        session2 = MagicMock()
         session2.session_id = "w0t0p1:another-session"
-        session2.async_get_profile = mock_iterm2_for_mcp.AsyncMock(
-            return_value={"Title": "Second Session", "Name": "Session 2"}
-        )
+        session2.async_get_profile = AsyncMock(return_value=mock_profile2)
 
         # Add second session to the same tab
         mock_app.terminal_windows[0].tabs[0].sessions.append(session2)

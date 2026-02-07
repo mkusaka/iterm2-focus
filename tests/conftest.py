@@ -1,7 +1,5 @@
 """Pytest configuration for iterm2-focus tests."""
 
-import sys
-
 import pytest
 from pytest_mock import MockerFixture
 
@@ -31,19 +29,16 @@ if MCP_TEST_AVAILABLE:
     @pytest.fixture
     def mock_iterm2_for_mcp(mocker):
         """Mock iTerm2 for MCP tests."""
-        mock_iterm2_module = mocker.MagicMock()
-
         # Mock Connection class
         mock_connection_instance = mocker.AsyncMock()
         mock_connection_class = mocker.MagicMock()
         mock_connection_class.async_create = mocker.AsyncMock(
             return_value=mock_connection_instance
         )
-        mock_iterm2_module.Connection = mock_connection_class
 
         # Mock App
         mock_app = mocker.MagicMock()
-        mock_iterm2_module.async_get_app = mocker.AsyncMock(return_value=mock_app)
+        mock_async_get_app = mocker.AsyncMock(return_value=mock_app)
 
         # Mock Window
         mock_window = mocker.MagicMock()
@@ -55,13 +50,14 @@ if MCP_TEST_AVAILABLE:
         mock_tab.tab_id = "t0"
         mock_tab.async_select = mocker.AsyncMock()
 
-        # Mock Session
+        # Mock Session with Profile object
+        mock_profile = mocker.MagicMock()
+        mock_profile.name = "Session Name"
+
         mock_session = mocker.MagicMock()
         mock_session.session_id = "w0t0p0:12345678-1234-1234-1234-123456789012"
         mock_session.async_activate = mocker.AsyncMock()
-        mock_session.async_get_profile = mocker.AsyncMock(
-            return_value={"Title": "Test Session", "Name": "Session Name"}
-        )
+        mock_session.async_get_profile = mocker.AsyncMock(return_value=mock_profile)
 
         # Wire up the relationships
         mock_tab.sessions = [mock_session]
@@ -72,10 +68,19 @@ if MCP_TEST_AVAILABLE:
         mock_app.windows = [mock_window]
         mock_app.current_terminal_window = mock_window
 
-        # Patch the iterm2 module for MCP imports
-        mocker.patch("iterm2_focus.mcp.tools.iterm_tools.iterm2", mock_iterm2_module)
+        # Patch the individual imports in iterm_tools
+        mocker.patch(
+            "iterm2_focus.mcp.tools.iterm_tools.Connection", mock_connection_class
+        )
+        mocker.patch(
+            "iterm2_focus.mcp.tools.iterm_tools.async_get_app", mock_async_get_app
+        )
 
-        return mock_iterm2_module
+        return mocker.MagicMock(
+            Connection=mock_connection_class,
+            async_get_app=mock_async_get_app,
+            app=mock_app,
+        )
 
     @pytest.fixture
     async def mcp_server(mock_iterm2_for_mcp):
@@ -127,20 +132,16 @@ def mock_iterm2(mocker: MockerFixture, request):
         yield None
         return
 
-    # Mock the iterm2 module before any imports
-    mock_iterm2_module = mocker.MagicMock()
-
     # Mock Connection class
     mock_connection_instance = mocker.AsyncMock()
     mock_connection_class = mocker.MagicMock()
     mock_connection_class.async_create = mocker.AsyncMock(
         return_value=mock_connection_instance
     )
-    mock_iterm2_module.Connection = mock_connection_class
 
     # Mock App
     mock_app = mocker.MagicMock()
-    mock_iterm2_module.async_get_app = mocker.AsyncMock(return_value=mock_app)
+    mock_async_get_app = mocker.AsyncMock(return_value=mock_app)
 
     # Mock Window
     mock_window = mocker.MagicMock()
@@ -157,7 +158,7 @@ def mock_iterm2(mocker: MockerFixture, request):
     mock_session.session_id = "w0t0p0:12345678-1234-1234-1234-123456789012"
     mock_session.async_activate = mocker.AsyncMock()
     mock_session.async_get_profile = mocker.AsyncMock(
-        return_value={"Title": "Test Session", "Name": "Session Name"}
+        return_value=mocker.MagicMock(name="Session Name")
     )
 
     # Wire up the relationships
@@ -169,18 +170,8 @@ def mock_iterm2(mocker: MockerFixture, request):
     mock_app.windows = [mock_window]
     mock_app.current_terminal_window = mock_window
 
-    # Patch the iterm2 module at import level
-    # This ensures any imports of iterm2 get the mock
-    original_iterm2 = sys.modules.get("iterm2")
-    sys.modules["iterm2"] = mock_iterm2_module
+    # Patch the individual imports in cli module
+    mocker.patch("iterm2_focus.cli.Connection", mock_connection_class)
+    mocker.patch("iterm2_focus.cli.async_get_app", mock_async_get_app)
 
-    # Also patch at the import name level for dynamic imports
-    mocker.patch("iterm2_focus.mcp.tools.iterm_tools.iterm2", mock_iterm2_module)
-
-    yield mock_iterm2_module
-
-    # Restore original if it existed
-    if original_iterm2:
-        sys.modules["iterm2"] = original_iterm2
-    else:
-        sys.modules.pop("iterm2", None)
+    yield mock_connection_class

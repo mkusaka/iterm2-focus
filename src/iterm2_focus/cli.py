@@ -6,7 +6,8 @@ import sys
 from typing import NoReturn
 
 import click
-import iterm2
+from iterm2.app import async_get_app
+from iterm2.connection import Connection
 
 from . import __version__
 from .focus import FocusError, focus_session
@@ -155,8 +156,10 @@ def _list_sessions() -> None:
 
     async def list_all_sessions() -> list[dict[str, str | None]]:
         """Async function to get all sessions."""
-        connection = await iterm2.Connection.async_create()
-        app = await iterm2.async_get_app(connection)
+        connection = await Connection.async_create()
+        app = await async_get_app(connection)
+        if app is None:
+            return []
 
         sessions: list[dict[str, str | None]] = []
         for window in app.terminal_windows:

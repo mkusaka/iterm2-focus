@@ -3,7 +3,8 @@
 import asyncio
 from typing import Any
 
-import iterm2
+from iterm2.app import async_get_app
+from iterm2.connection import Connection
 
 
 class FocusError(Exception):
@@ -27,8 +28,10 @@ async def async_focus_session(session_id: str) -> bool:
     connection: Any | None = None
 
     try:
-        connection = await iterm2.Connection.async_create()
-        app = await iterm2.async_get_app(connection)
+        connection = await Connection.async_create()
+        app = await async_get_app(connection)
+        if app is None:
+            raise FocusError("Failed to get iTerm2 app instance.")
 
         # Search through all windows, tabs, and sessions
         for window in app.terminal_windows:
