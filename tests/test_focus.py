@@ -29,8 +29,10 @@ async def test_async_focus_session_success() -> None:
     mock_connection = AsyncMock()
 
     with (
-        patch("iterm2.Connection.async_create", return_value=mock_connection),
-        patch("iterm2.async_get_app", return_value=mock_app),
+        patch(
+            "iterm2_focus.focus.Connection.async_create", return_value=mock_connection
+        ),
+        patch("iterm2_focus.focus.async_get_app", return_value=mock_app),
     ):
         result = await async_focus_session("test_session_id")
 
@@ -58,8 +60,10 @@ async def test_async_focus_session_not_found() -> None:
     mock_connection = AsyncMock()
 
     with (
-        patch("iterm2.Connection.async_create", return_value=mock_connection),
-        patch("iterm2.async_get_app", return_value=mock_app),
+        patch(
+            "iterm2_focus.focus.Connection.async_create", return_value=mock_connection
+        ),
+        patch("iterm2_focus.focus.async_get_app", return_value=mock_app),
     ):
         result = await async_focus_session("test_session_id")
 

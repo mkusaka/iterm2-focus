@@ -3,7 +3,8 @@
 import asyncio
 from typing import Any
 
-import iterm2
+from iterm2.app import async_get_app
+from iterm2.connection import Connection
 
 
 async def get_session_info(session_id: str) -> dict[str, Any] | None:
@@ -18,8 +19,10 @@ async def get_session_info(session_id: str) -> dict[str, Any] | None:
     connection: Any | None = None
 
     try:
-        connection = await iterm2.Connection.async_create()
-        app = await iterm2.async_get_app(connection)
+        connection = await Connection.async_create()
+        app = await async_get_app(connection)
+        if app is None:
+            return None
 
         for window in app.terminal_windows:
             for tab in window.tabs:
@@ -65,8 +68,10 @@ async def focus_session_by_name(name_pattern: str) -> bool:
     connection: Any | None = None
 
     try:
-        connection = await iterm2.Connection.async_create()
-        app = await iterm2.async_get_app(connection)
+        connection = await Connection.async_create()
+        app = await async_get_app(connection)
+        if app is None:
+            return False
 
         name_lower = name_pattern.lower()
 
@@ -97,8 +102,10 @@ async def get_all_sessions() -> list[dict[str, Any]]:
     connection: Any | None = None
 
     try:
-        connection = await iterm2.Connection.async_create()
-        app = await iterm2.async_get_app(connection)
+        connection = await Connection.async_create()
+        app = await async_get_app(connection)
+        if app is None:
+            return []
 
         sessions: list[dict[str, Any]] = []
 

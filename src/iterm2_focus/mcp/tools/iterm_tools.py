@@ -1,6 +1,7 @@
 """MCP tools for iTerm2 session management."""
 
-import iterm2
+from iterm2.app import async_get_app
+from iterm2.connection import Connection
 from pydantic import BaseModel, Field
 
 from ..server import mcp
@@ -35,8 +36,10 @@ async def list_sessions() -> list[SessionInfo]:
     including their IDs and whether they're currently active.
     """
     try:
-        connection = await iterm2.Connection.async_create()
-        app = await iterm2.async_get_app(connection)
+        connection = await Connection.async_create()
+        app = await async_get_app(connection)
+        if app is None:
+            return []
         sessions = []
 
         # Get the current active session for comparison
@@ -57,8 +60,7 @@ async def list_sessions() -> list[SessionInfo]:
                     try:
                         profile = await session.async_get_profile()
                         if profile:
-                            title = profile.get("Title")
-                            name = profile.get("Name")
+                            name = profile.name
                     except Exception:
                         # Ignore errors getting profile info
                         pass
@@ -92,8 +94,14 @@ async def focus_session(session_id: str) -> FocusResult:
         FocusResult indicating success or failure with a descriptive message
     """
     try:
-        connection = await iterm2.Connection.async_create()
-        app = await iterm2.async_get_app(connection)
+        connection = await Connection.async_create()
+        app = await async_get_app(connection)
+        if app is None:
+            return FocusResult(
+                success=False,
+                session_id=session_id,
+                message="Failed to get iTerm2 app instance.",
+            )
 
         # Search for the session
         for window in app.terminal_windows:
@@ -139,8 +147,10 @@ async def get_current_session() -> SessionInfo | None:
         SessionInfo about the current session, or None if no session is active
     """
     try:
-        connection = await iterm2.Connection.async_create()
-        app = await iterm2.async_get_app(connection)
+        connection = await Connection.async_create()
+        app = await async_get_app(connection)
+        if app is None:
+            return None
 
         window = app.current_terminal_window
         if not window:
@@ -160,8 +170,7 @@ async def get_current_session() -> SessionInfo | None:
         try:
             profile = await session.async_get_profile()
             if profile:
-                title = profile.get("Title")
-                name = profile.get("Name")
+                name = profile.name
         except Exception:
             # Ignore errors getting profile info
             pass
