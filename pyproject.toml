@@ -28,7 +28,7 @@ keywords = ["iterm2", "terminal", "focus", "macos", "cli"]
 
 dependencies = [
     "click>=8.3.1",
-    "iterm2>=2.13",
+    "iterm2>=2.14",
 ]
 
 [project.urls]
