@@ -10,16 +10,39 @@
     },
     {
       "matchManagers": ["pep621"],
+      "matchDepTypes": ["project.dependencies", "build-system.requires"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "python dependencies",
+      "automerge": true,
+      "automergeType": "pr",
+      "minimumReleaseAge": "7 days"
+    },
+    {
+      "matchManagers": ["pep621"],
       "matchDepTypes": ["tool.uv.dev-dependencies"],
       "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "dev dependencies"
+      "groupName": "python dev dependencies",
+      "automerge": true,
+      "automergeType": "pr",
+      "minimumReleaseAge": "7 days"
     },
     {
       "matchManagers": ["pep621"],
       "matchDepTypes": ["project.optional-dependencies"],
       "matchJsonata": ["managerData.depGroup = 'dev'"],
       "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "dev dependencies"
+      "groupName": "python dev dependencies",
+      "automerge": true,
+      "automergeType": "pr",
+      "minimumReleaseAge": "7 days"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
+      "groupName": "github actions",
+      "automerge": true,
+      "automergeType": "pr",
+      "minimumReleaseAge": "7 days"
     },
     {
       "matchManagers": ["pep621"],
