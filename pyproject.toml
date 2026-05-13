@@ -93,7 +93,7 @@ dev-dependencies = [
     "ipython>=9.13.0",
     "twine>=6.2.0",
     "mcp[cli]>=1.27.0",
-    "pydantic>=2.13.3",
+    "pydantic>=2.13.4",
     "anyio>=4.13.0",
     "pytest-xdist>=3.8.0",
 ]
