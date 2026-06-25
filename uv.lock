@@ -509,7 +509,7 @@ requires-dist = [
     { name = "iterm2", specifier = ">=2.20" },
     { name = "mcp", extras = ["cli"], marker = "extra == 'mcp'", specifier = ">=1.26.0" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=2.1.0" },
-    { name = "pydantic", marker = "extra == 'mcp'", specifier = ">=2.12.5" },
+    { name = "pydantic", marker = "extra == 'mcp'", specifier = ">=2.13.4" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=9.0.3" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=1.4.0" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=7.1.0" },
