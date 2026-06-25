@@ -1,66 +1,66 @@
 {
+  automerge: true,
+  platformAutomerge: false,
   minimumReleaseAge: "7 days",
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:best-practices"
-  ],
-  "customManagers": [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["config:best-practices"],
+  customManagers: [
     {
-      "customType": "regex",
-      "managerFilePatterns": [
+      customType: "regex",
+      managerFilePatterns: [
         "/(^|/)(workflow-templates|\\.(?:github|gitea|forgejo)/(?:workflows|actions))/.+\\.ya?ml$/",
-        "/(^|/)action\\.ya?ml$/"
+        "/(^|/)action\\.ya?ml$/",
       ],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>[a-zA-Z0-9-._]+?) depName=(?<depName>[^\\s]+?)(?: (?:lookupName|packageName)=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?(?: registryUrl=(?<registryUrl>[^\\s]+?))?\\s+[A-Za-z0-9_]+?_VERSION\\s*:\\s*[\"']?(?<currentValue>.+?)[\"']?\\s"
-      ]
-    }
+      matchStrings: [
+        "# renovate: datasource=(?<datasource>[a-zA-Z0-9-._]+?) depName=(?<depName>[^\\s]+?)(?: (?:lookupName|packageName)=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?(?: registryUrl=(?<registryUrl>[^\\s]+?))?\\s+[A-Za-z0-9_]+?_VERSION\\s*:\\s*[\"']?(?<currentValue>.+?)[\"']?\\s",
+      ],
+    },
   ],
-  "packageRules": [
+  packageRules: [
     {
-      "matchManagers": ["pep621"],
-      "rangeStrategy": "bump"
+      matchManagers: ["pep621"],
+      rangeStrategy: "bump",
     },
     {
-      "matchManagers": ["pep621"],
-      "matchDepTypes": ["project.dependencies", "build-system.requires"],
-      "matchUpdateTypes": ["minor", "patch", "pin"],
-      "groupName": "python dependencies",
-      "automerge": true,
-      "automergeType": "pr",
-      "minimumReleaseAge": "7 days"
+      matchManagers: ["pep621"],
+      matchDepTypes: ["project.dependencies", "build-system.requires"],
+      matchUpdateTypes: ["minor", "patch", "pin"],
+      groupName: "python dependencies",
+      automerge: true,
+      automergeType: "pr",
+      minimumReleaseAge: "7 days",
     },
     {
-      "matchManagers": ["pep621"],
-      "matchDepTypes": ["tool.uv.dev-dependencies"],
-      "matchUpdateTypes": ["minor", "patch", "pin"],
-      "groupName": "python dev dependencies",
-      "automerge": true,
-      "automergeType": "pr",
-      "minimumReleaseAge": "7 days"
+      matchManagers: ["pep621"],
+      matchDepTypes: ["tool.uv.dev-dependencies"],
+      matchUpdateTypes: ["minor", "patch", "pin"],
+      groupName: "python dev dependencies",
+      automerge: true,
+      automergeType: "pr",
+      minimumReleaseAge: "7 days",
     },
     {
-      "matchManagers": ["pep621"],
-      "matchDepTypes": ["project.optional-dependencies"],
-      "matchJsonata": ["managerData.depGroup = 'dev'"],
-      "matchUpdateTypes": ["minor", "patch", "pin"],
-      "groupName": "python dev dependencies",
-      "automerge": true,
-      "automergeType": "pr",
-      "minimumReleaseAge": "7 days"
+      matchManagers: ["pep621"],
+      matchDepTypes: ["project.optional-dependencies"],
+      matchJsonata: ["managerData.depGroup = 'dev'"],
+      matchUpdateTypes: ["minor", "patch", "pin"],
+      groupName: "python dev dependencies",
+      automerge: true,
+      automergeType: "pr",
+      minimumReleaseAge: "7 days",
     },
     {
-      "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
-      "groupName": "github actions (non-major)",
-      "automerge": true,
-      "automergeType": "pr",
-      "minimumReleaseAge": "7 days"
+      matchManagers: ["github-actions"],
+      matchUpdateTypes: ["minor", "patch", "digest", "pinDigest"],
+      groupName: "github actions (non-major)",
+      automerge: true,
+      automergeType: "pr",
+      minimumReleaseAge: "7 days",
     },
     {
-      "matchManagers": ["pep621"],
-      "matchPackageNames": ["python"],
-      "dependencyDashboardApproval": true
-    }
-  ]
+      matchManagers: ["pep621"],
+      matchPackageNames: ["python"],
+      dependencyDashboardApproval: true,
+    },
+  ],
 }
