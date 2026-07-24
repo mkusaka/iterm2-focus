@@ -51,11 +51,11 @@ dev = [
     "pytest-asyncio>=1.4.0",
     "pytest-mock>=3.15.1",
     "black>=26.5.1",
-    "ruff>=0.15.20",
-    "mypy>=2.1.0",
+    "ruff>=0.15.22",
+    "mypy>=2.3.0",
     "types-click>=7.1.8",
     "twine>=6.2.0",
-    "anyio>=4.14.1",
+    "anyio>=4.14.2",
     "pytest-xdist>=3.8.0",
 ]
 
@@ -87,14 +87,14 @@ dev-dependencies = [
     "pytest-asyncio>=1.4.0",
     "pytest-mock>=3.15.1",
     "black>=26.5.1",
-    "ruff>=0.15.20",
-    "mypy>=2.1.0",
+    "ruff>=0.15.22",
+    "mypy>=2.3.0",
     "types-click>=7.1.8",
     "ipython>=9.15.0",
     "twine>=6.2.0",
     "mcp[cli]>=1.28.1",
     "pydantic>=2.13.4",
-    "anyio>=4.14.1",
+    "anyio>=4.14.2",
     "pytest-xdist>=3.8.0",
 ]
 
