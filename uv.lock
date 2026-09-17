@@ -441,15 +441,15 @@ wheels = [
 
 [[package]]
 name = "iterm2"
-version = "2.22"
+version = "2.23"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "protobuf" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a9/eb/3b0eee58d952b693e7cfd693e172fade70d75aebf62e619fe9be12acf938/iterm2-2.22.tar.gz", hash = "sha256:35f050bdbd1a459e70e3774ad7e922cf1ea36b650c9d7eb59ddd93e3dbb9f308", size = 183795, upload-time = "2026-08-25T19:33:35.888Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f9/69/837ae2d73964d26e282c2504cc90ed866f681fff67e04f717abbf8c05f65/iterm2-2.23.tar.gz", hash = "sha256:366423ccabc72221357631278dced66edb1e8274d13333fb99f50081463b9745", size = 184095, upload-time = "2026-09-10T00:47:53.145Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/66/37/a0c7d17cf8c38b5bc79ccaf34292b0f4f029f75abbde18fe2a81bd16535d/iterm2-2.22-py3-none-any.whl", hash = "sha256:8d84d992a439ca01369f71b17ed1312b6453eb7b249712b09333f1275934045d", size = 189800, upload-time = "2026-08-25T19:33:34.734Z" },
+    { url = "https://files.pythonhosted.org/packages/3c/c6/eb6978a99a4cb08d76c218f394fa84b10a29d71f8dad23452b227950eb28/iterm2-2.23-py3-none-any.whl", hash = "sha256:a88356b13141f3f522acef62a78af052b080998ac5f67d26018eedce98c565fb", size = 190155, upload-time = "2026-09-10T00:47:52.003Z" },
 ]
 
 [[package]]
@@ -503,7 +503,7 @@ requires-dist = [
     { name = "anyio", marker = "extra == 'dev'", specifier = ">=4.14.1" },
     { name = "black", marker = "extra == 'dev'", specifier = ">=26.5.1" },
     { name = "click", specifier = ">=8.5.0" },
-    { name = "iterm2", specifier = ">=2.22" },
+    { name = "iterm2", specifier = ">=2.23" },
     { name = "mcp", extras = ["cli"], marker = "extra == 'mcp'", specifier = ">=1.28.1" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=2.1.0" },
     { name = "pydantic", marker = "extra == 'mcp'", specifier = ">=2.13.5" },
