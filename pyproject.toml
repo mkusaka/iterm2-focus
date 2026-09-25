@@ -28,7 +28,7 @@ keywords = ["iterm2", "terminal", "focus", "macos", "cli"]
 
 dependencies = [
     "click>=8.5.0",
-    "iterm2>=2.23",
+    "iterm2>=2.24",
 ]
 
 [project.urls]
@@ -60,7 +60,7 @@ dev = [
 ]
 
 [build-system]
-requires = ["hatchling>=1.32.0"]
+requires = ["hatchling>=1.32.3"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build]
