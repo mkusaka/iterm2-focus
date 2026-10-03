@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.14.3"
 resolution-markers = [
     "python_full_version >= '3.15'",
@@ -442,15 +442,15 @@ wheels = [
 
 [[package]]
 name = "iterm2"
-version = "2.24"
+version = "2.25"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "protobuf" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1d/70/25340fae0bd8fa88746d862cb982cf5cdffb25e5952db7601a694f1a9fc5/iterm2-2.24.tar.gz", hash = "sha256:9edd34e32d6ed9fa1851dbe99c4d34f6defe1075763c4409b59b33b21cd71d5d", size = 186638, upload-time = "2026-09-17T17:18:34.463Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e2/be/ce305245d48e43d014d5de6fa4df05ed5900e50c24830b69ea26eca8e358/iterm2-2.25.tar.gz", hash = "sha256:19a214bc27e780265527edd99403297432b1611ff2b8213b4675b25d646cb4a8", size = 188527, upload-time = "2026-09-26T18:35:51.254Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/89/a5/e9738845c29e72eeee6db5d1872713fab380313b0ebfaa3d1d6868c99229/iterm2-2.24-py3-none-any.whl", hash = "sha256:efe7045e7c063c851a1c95d023047437dff7227d299a97794d701b9f43eafe88", size = 193510, upload-time = "2026-09-17T17:18:33.289Z" },
+    { url = "https://files.pythonhosted.org/packages/7e/7b/858ea3473f6bc7e2752f270bec317e5f57789c510ebb5f0ef091afb04f0b/iterm2-2.25-py3-none-any.whl", hash = "sha256:490eca3a93696396e19414d244c41784c282e816c0ab4b9e568df177b30e52a0", size = 194200, upload-time = "2026-09-26T18:35:50.071Z" },
 ]
 
 [[package]]
@@ -504,7 +504,7 @@ requires-dist = [
     { name = "anyio", marker = "extra == 'dev'", specifier = ">=4.14.1" },
     { name = "black", marker = "extra == 'dev'", specifier = ">=26.5.1" },
     { name = "click", specifier = ">=8.5.0" },
-    { name = "iterm2", specifier = ">=2.24" },
+    { name = "iterm2", specifier = ">=2.25" },
     { name = "mcp", extras = ["cli"], marker = "extra == 'mcp'", specifier = ">=1.28.1" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=2.1.0" },
     { name = "pydantic", marker = "extra == 'mcp'", specifier = ">=2.13.5" },
