@@ -186,11 +186,11 @@ wheels = [
 
 [[package]]
 name = "click"
-version = "8.5.0"
+version = "8.5.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/c7/0e/7fa0ef50764b67090eca4114772a2abf8b6148198475e54c660b97caeee6/click-8.5.0.tar.gz", hash = "sha256:ba0d2089de75ea0310e2dde03160e6ca10009947fb95a182f9b54021bb272e34", size = 382235, upload-time = "2026-08-26T13:33:14.56Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/45/37/edbf1b0707709013c0cf2e8317e03d97ed29bf4cac709fe328904ae92a38/click-8.5.1.tar.gz", hash = "sha256:9bbfada76703fd1d784b83eea012e3e8c6a001a876543ef104fa56aaaeb072b4", size = 399151, upload-time = "2026-11-06T17:37:01.021Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/58/50/6c0d534c5f134586a8e1ba4e330569e32f057e33372ae556463212fb4cd3/click-8.5.0-py3-none-any.whl", hash = "sha256:255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360", size = 125251, upload-time = "2026-08-26T13:33:12.928Z" },
+    { url = "https://files.pythonhosted.org/packages/31/7d/164b7ffc8624fe9efb4221bf9af485d5c1e41b9ae118045d2b6dc5457d8b/click-8.5.1-py3-none-any.whl", hash = "sha256:8bb5376d2006950386f8c6427613334a2acadc5f559cb80e638d00b4df957e37", size = 126163, upload-time = "2026-11-06T17:36:59.287Z" },
 ]
 
 [[package]]
@@ -442,15 +442,15 @@ wheels = [
 
 [[package]]
 name = "iterm2"
-version = "2.25"
+version = "2.30"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "protobuf" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e2/be/ce305245d48e43d014d5de6fa4df05ed5900e50c24830b69ea26eca8e358/iterm2-2.25.tar.gz", hash = "sha256:19a214bc27e780265527edd99403297432b1611ff2b8213b4675b25d646cb4a8", size = 188527, upload-time = "2026-09-26T18:35:51.254Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/36/a8/e88133c8b7418bd0905859a2f9dd0f5388c5a394434790e46e54cf15678c/iterm2-2.30.tar.gz", hash = "sha256:eaa814b64f11d58984dfa02e790016983e7c4eb4f41cceae174ba361708200ec", size = 208812, upload-time = "2026-10-12T23:14:18.696Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7e/7b/858ea3473f6bc7e2752f270bec317e5f57789c510ebb5f0ef091afb04f0b/iterm2-2.25-py3-none-any.whl", hash = "sha256:490eca3a93696396e19414d244c41784c282e816c0ab4b9e568df177b30e52a0", size = 194200, upload-time = "2026-09-26T18:35:50.071Z" },
+    { url = "https://files.pythonhosted.org/packages/a1/11/10599ebced97c478314eef67f4fb2445adbb2a47f7a306a5cfa9083ada90/iterm2-2.30-py3-none-any.whl", hash = "sha256:6888f3ab09124f8915e35ef60359688c00c2ee41bec742133f6d6dcd0c9c50ce", size = 209849, upload-time = "2026-10-12T23:14:17.407Z" },
 ]
 
 [[package]]
@@ -503,8 +503,8 @@ dev = [
 requires-dist = [
     { name = "anyio", marker = "extra == 'dev'", specifier = ">=4.14.1" },
     { name = "black", marker = "extra == 'dev'", specifier = ">=26.5.1" },
-    { name = "click", specifier = ">=8.5.0" },
-    { name = "iterm2", specifier = ">=2.25" },
+    { name = "click", specifier = ">=8.5.1" },
+    { name = "iterm2", specifier = ">=2.30" },
     { name = "mcp", extras = ["cli"], marker = "extra == 'mcp'", specifier = ">=1.28.1" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=2.1.0" },
     { name = "pydantic", marker = "extra == 'mcp'", specifier = ">=2.13.5" },
