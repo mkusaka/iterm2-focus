@@ -46,16 +46,16 @@ mcp = [
     "pydantic>=2.13.5",
 ]
 dev = [
-    "pytest>=9.1.1",
+    "pytest>=9.2.0",
     "pytest-cov>=7.1.0",
-    "pytest-asyncio>=1.4.0",
-    "pytest-mock>=3.15.1",
+    "pytest-asyncio>=1.4.1.post1",
+    "pytest-mock>=3.17.0",
     "black>=26.5.1",
-    "ruff>=0.15.20",
-    "mypy>=2.1.0",
+    "ruff>=0.17.4",
+    "mypy>=2.4.1",
     "types-click>=7.1.8",
     "twine>=7.0.0",
-    "anyio>=4.14.1",
+    "anyio>=4.16.0",
     "pytest-xdist>=3.8.0",
 ]
 
@@ -82,19 +82,19 @@ allow-direct-references = true
 
 [tool.uv]
 dev-dependencies = [
-    "pytest>=9.1.1",
+    "pytest>=9.2.0",
     "pytest-cov>=7.1.0",
-    "pytest-asyncio>=1.4.0",
-    "pytest-mock>=3.15.1",
+    "pytest-asyncio>=1.4.1.post1",
+    "pytest-mock>=3.17.0",
     "black>=26.5.1",
-    "ruff>=0.15.20",
-    "mypy>=2.1.0",
+    "ruff>=0.17.4",
+    "mypy>=2.4.1",
     "types-click>=7.1.8",
-    "ipython>=9.15.0",
+    "ipython>=9.18.1",
     "twine>=7.0.0",
     "mcp[cli]>=1.28.1",
-    "pydantic>=2.13.4",
-    "anyio>=4.14.1",
+    "pydantic>=2.14.3",
+    "anyio>=4.16.0",
     "pytest-xdist>=3.8.0",
 ]
 
